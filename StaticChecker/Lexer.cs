@@ -5,7 +5,7 @@ class Lexer
     private readonly string _text;
     private int _position;
 
-    private Dictionary<Char, Atom> operatorMapping = new Dictionary<Char, Atom>{
+    private Dictionary<Char, Atom> singleOperatorMapping = new Dictionary<Char, Atom>{
         {'(', new Atom(SyntaxKind.OpenParenthesisToken, "S06", "(")},
         {')', new Atom(SyntaxKind.CloseParenthesisToken, "S07", ")")},
         {'+', new Atom(SyntaxKind.PlusToken, "S16", "+")},
@@ -70,10 +70,9 @@ class Lexer
             return new SyntaxToken(SyntaxKind.WhiteSpaceToken, start, text, null);
         }
 
-
-        if (operatorMapping.ContainsKey(Current))
+        if (singleOperatorMapping.ContainsKey(Current))
         {
-            var atom = operatorMapping[Current];
+            var atom = singleOperatorMapping[Current];
             return new SyntaxToken(atom.Kind, _position++, atom.TextRepresentation, null);
         }
 
