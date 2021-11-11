@@ -1,8 +1,38 @@
-﻿class Program
+﻿using OrmPlusCompiler.StaticChecker;
+class Program
 {
-    static int Main(string[] args)
+    static void Main(string[] args)
     {
-        Console.WriteLine("Hello, World!");
-        return 0;
+        while (true)
+        {
+            Console.Write("> ");
+
+            var line = Console.ReadLine();
+
+            if (string.IsNullOrWhiteSpace(line))
+            {
+                return;
+            }
+
+            var lexer = new Lexer(line);
+
+            while (true)
+            {
+                var token = lexer.ReadToken();
+
+                if (token.Kind == SyntaxKind.EndOfFileToken)
+                {
+                    break;
+                }
+                Console.Write($"{token.Kind}: '{token.Text}'");
+
+                if (token.Value != null)
+                {
+                    Console.Write($" {token.Value}");
+                }
+
+                Console.WriteLine();
+            }
+        }
     }
 }
