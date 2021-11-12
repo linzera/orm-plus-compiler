@@ -33,6 +33,7 @@ namespace OrmPlusCompiler.StaticChecker
         NumberExpression,
         BinaryExpression,
         ParenthesizedExpression,
+        UnaryExpression,
     }
 }
 

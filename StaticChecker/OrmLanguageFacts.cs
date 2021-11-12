@@ -12,13 +12,27 @@ class OrmLanguageFacts
         {'/', new Atom(SyntaxKind.SlashToken, "S19", "/")},
     };
 
+
+    public static int GetUnaryOperatorPrecedence(SyntaxKind kind)
+    {
+        switch (kind)
+        {
+            case SyntaxKind.PlusToken:
+            case SyntaxKind.MinusToken:
+                return 3;
+
+            default:
+                return 0;
+        }
+    }
+
     // Agora conseguimos adicionar prioridades ao tokens com o uso de precedentes.
     public static int GetBinaryOperatorPrecedence(SyntaxKind kind)
     {
         switch (kind)
         {
-            case SyntaxKind.SlashToken:
             case SyntaxKind.StarToken:
+            case SyntaxKind.SlashToken:
                 return 2;
             case SyntaxKind.PlusToken:
             case SyntaxKind.MinusToken:

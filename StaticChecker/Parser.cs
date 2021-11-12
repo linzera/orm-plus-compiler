@@ -71,7 +71,18 @@ class Parser
 
     private ExpressionSyntax ParseExpression(int parentPrecedence = 0)
     {
-        var left = ParsePrimaryExpression();
+        ExpressionSyntax left;
+        var unaryOperatorPrecedence = OrmLanguageFacts.GetUnaryOperatorPrecedence(Current.Kind);
+        if (unaryOperatorPrecedence != 0 && unaryOperatorPrecedence >= parentPrecedence)
+        {
+            var operatorToken = NextToken();
+            var operand = ParseExpression(unaryOperatorPrecedence);
+            left = new UnaryExpressionSyntax(operatorToken, operand);
+        }
+        else
+        {
+            left = ParsePrimaryExpression();
+        }
 
         while (true)
         {
@@ -89,8 +100,6 @@ class Parser
 
         return left;
     }
-
-
 
 
     private ExpressionSyntax ParsePrimaryExpression()

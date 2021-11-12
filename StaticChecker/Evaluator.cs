@@ -15,13 +15,28 @@ class Evaluator
 
     private int EvaluateExpression(ExpressionSyntax node)
     {
-        // Only support for:
-        // BinaryExpression
-        // NumberExpression
 
         if (node is LiteralExpressionSyntax n)
         {
             return (int)n.LiteralToken.Value;
+        }
+
+        if (node is UnaryExpressionSyntax u)
+        {
+            var operand = EvaluateExpression(u.Operand);
+
+            if (u.OperatorToken.Kind == SyntaxKind.PlusToken)
+            {
+                return operand;
+            }
+            else if (u.OperatorToken.Kind == SyntaxKind.MinusToken)
+            {
+                return -operand;
+            }
+            else
+            {
+                throw new Exception($"Unexpected union operator {u.OperatorToken.Kind}");
+            }
         }
 
         if (node is BinaryExpressionSyntax b)
