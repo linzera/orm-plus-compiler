@@ -33,7 +33,7 @@ class Lexer
         _position++;
     }
 
-    public SyntaxToken ReadToken()
+    public SyntaxToken Lex()
     {
 
         if (_position >= _text.Length)

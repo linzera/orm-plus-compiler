@@ -15,7 +15,7 @@ class Parser
 
         do
         {
-            token = lexer.ReadToken();
+            token = lexer.Lex();
 
             if (token.Kind != SyntaxKind.WhiteSpaceToken && token.Kind != SyntaxKind.BadExpressionToken)
             {
