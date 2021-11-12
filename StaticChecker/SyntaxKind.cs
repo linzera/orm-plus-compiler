@@ -28,6 +28,9 @@ namespace OrmPlusCompiler.StaticChecker
         WhiteSpaceToken,
         BadExpressionToken,
         EndOfFileToken,
+        NumberExpression,
+        BinaryExpression,
+        ParenthesizedExpression,
     }
 }
 

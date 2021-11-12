@@ -3,6 +3,9 @@ class Program
 {
     static void Main(string[] args)
     {
+
+        var showTree = false;
+
         while (true)
         {
             Console.Write("> ");
@@ -14,25 +17,61 @@ class Program
                 return;
             }
 
-            var lexer = new Lexer(line);
-
-            while (true)
+            if (line == "#showTree")
             {
-                var token = lexer.ReadToken();
+                showTree = !showTree;
+                Console.WriteLine(showTree ? "Showing parse trees." : "Not showing parse trees");
+                continue;
+            }
+            else if (line == "clear")
+            {
+                Console.Clear();
+                continue;
+            }
 
-                if (token.Kind == SyntaxKind.EndOfFileToken)
+            var syntaxTree = SyntaxTree.Parse(line);
+
+            if (showTree)
+                TreePrint(syntaxTree.Root);
+
+
+            if (syntaxTree.Diagnostics.Any())
+            {
+                foreach (var diagnostic in syntaxTree.Diagnostics)
                 {
-                    break;
+                    Console.WriteLine(diagnostic);
                 }
-                Console.Write($"{token.Kind}: '{token.Text}'");
-
-                if (token.Value != null)
-                {
-                    Console.Write($" {token.Value}");
-                }
-
-                Console.WriteLine();
+            }
+            else
+            {
+                var e = new Evaluator(syntaxTree.Root);
+                var result = e.Evaluate();
+                Console.WriteLine(result);
             }
         }
+    }
+
+    static void TreePrint(SyntaxNode node, string indent = "", bool isLast = true)
+    {
+        var marker = isLast ? "└──" : "├──";
+
+        Console.Write(indent);
+        Console.Write(marker);
+        Console.Write(node.Kind);
+
+        if (node is SyntaxToken t && t.Value != null)
+        {
+            Console.Write(" ");
+            Console.Write(t.Value);
+        }
+
+        Console.WriteLine();
+
+        indent += isLast ? "    " : "│   ";
+
+        var lastChild = node.GetChildren().LastOrDefault();
+
+        foreach (var child in node.GetChildren())
+            TreePrint(child, indent, child == lastChild);
     }
 }

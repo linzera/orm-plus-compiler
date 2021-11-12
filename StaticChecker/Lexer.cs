@@ -4,20 +4,14 @@ class Lexer
 {
     private readonly string _text;
     private int _position;
-
-    private Dictionary<Char, Atom> singleOperatorMapping = new Dictionary<Char, Atom>{
-        {'(', new Atom(SyntaxKind.OpenParenthesisToken, "S06", "(")},
-        {')', new Atom(SyntaxKind.CloseParenthesisToken, "S07", ")")},
-        {'+', new Atom(SyntaxKind.PlusToken, "S16", "+")},
-        {'-', new Atom(SyntaxKind.MinusToken, "S17", "-")},
-        {'*', new Atom(SyntaxKind.StarToken, "S18", "*")},
-        {'/', new Atom(SyntaxKind.SlashToken, "S19", "/")},
-    };
+    private List<string> _diagnostics = new List<string>();
 
     public Lexer(string text)
     {
         this._text = text;
     }
+
+    public IEnumerable<string> Diagnostics => _diagnostics;
 
     private char Current
     {
@@ -54,7 +48,10 @@ class Lexer
 
             var digitLength = _position - start;
             var text = _text.Substring(start, digitLength);
-            int.TryParse(text, out int value);
+            if (!int.TryParse(text, out int value))
+            {
+                _diagnostics.Add($"The number {_text} can not be represented as an Int32");
+            }
             return new SyntaxToken(SyntaxKind.NumberToken, start, text, value);
         }
 
@@ -70,12 +67,13 @@ class Lexer
             return new SyntaxToken(SyntaxKind.WhiteSpaceToken, start, text, null);
         }
 
-        if (singleOperatorMapping.ContainsKey(Current))
+        if (OrmTokens.singleOperatorMapping.ContainsKey(Current))
         {
-            var atom = singleOperatorMapping[Current];
+            var atom = OrmTokens.singleOperatorMapping[Current];
             return new SyntaxToken(atom.Kind, _position++, atom.TextRepresentation, null);
         }
 
+        _diagnostics.Add($"ERROR: bad character input: '{Current}'");
         return new SyntaxToken(SyntaxKind.BadExpressionToken, _position++, _text.Substring(_position - 1, 1), null);
     }
 
