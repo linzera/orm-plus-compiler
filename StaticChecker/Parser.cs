@@ -68,42 +68,28 @@ class Parser
         return new SyntaxTree(expression, endOfFileToken, Diagnostics);
     }
 
-    private ExpressionSyntax ParseExpression()
-    {
-        return ParseTerm();
-    }
 
-    private ExpressionSyntax ParseTerm()
-    {
-        var left = ParseFactor();
-
-        while (Current.Kind == SyntaxKind.PlusToken
-               || Current.Kind == SyntaxKind.MinusToken
-               )
-        {
-            var operatorToken = NextToken();
-            var right = ParseFactor();
-            left = new BinaryExpressionSyntax(left, operatorToken, right);
-        }
-
-        return left;
-    }
-
-    private ExpressionSyntax ParseFactor()
+    private ExpressionSyntax ParseExpression(int parentPrecedence = 0)
     {
         var left = ParsePrimaryExpression();
 
-        while (
-               Current.Kind == SyntaxKind.SlashToken
-            || Current.Kind == SyntaxKind.StarToken)
+        while (true)
         {
+            var precedence = OrmLanguageFacts.GetBinaryOperatorPrecedence(Current.Kind);
+
+            if (precedence == 0 || precedence <= parentPrecedence)
+            {
+                break;
+            }
+
             var operatorToken = NextToken();
-            var right = ParsePrimaryExpression();
+            var right = ParseExpression(precedence);
             left = new BinaryExpressionSyntax(left, operatorToken, right);
         }
 
         return left;
     }
+
 
 
 

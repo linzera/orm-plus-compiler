@@ -67,9 +67,9 @@ class Lexer
             return new SyntaxToken(SyntaxKind.WhiteSpaceToken, start, text, null);
         }
 
-        if (OrmTokens.singleOperatorMapping.ContainsKey(Current))
+        if (OrmLanguageFacts.singleOperatorMapping.ContainsKey(Current))
         {
-            var atom = OrmTokens.singleOperatorMapping[Current];
+            var atom = OrmLanguageFacts.singleOperatorMapping[Current];
             return new SyntaxToken(atom.Kind, _position++, atom.TextRepresentation, null);
         }
 

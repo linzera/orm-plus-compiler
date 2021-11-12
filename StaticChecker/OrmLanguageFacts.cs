@@ -1,6 +1,6 @@
 namespace OrmPlusCompiler.StaticChecker;
 
-class OrmTokens
+class OrmLanguageFacts
 {
 
     public static Dictionary<Char, Atom> singleOperatorMapping = new Dictionary<Char, Atom>{
@@ -12,4 +12,19 @@ class OrmTokens
         {'/', new Atom(SyntaxKind.SlashToken, "S19", "/")},
     };
 
+    // Agora conseguimos adicionar prioridades ao tokens com o uso de precedentes.
+    public static int GetBinaryOperatorPrecedence(SyntaxKind kind)
+    {
+        switch (kind)
+        {
+            case SyntaxKind.SlashToken:
+            case SyntaxKind.StarToken:
+                return 2;
+            case SyntaxKind.PlusToken:
+            case SyntaxKind.MinusToken:
+                return 1;
+            default:
+                return 0;
+        }
+    }
 }
