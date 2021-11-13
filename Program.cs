@@ -1,4 +1,6 @@
 ﻿using OrmPlusCompiler.StaticChecker;
+using OrmPlusCompiler.StaticChecker.Syntax;
+
 class Program
 {
     static void Main(string[] args)

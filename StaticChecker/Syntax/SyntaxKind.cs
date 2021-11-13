@@ -1,4 +1,4 @@
-namespace OrmPlusCompiler.StaticChecker
+namespace OrmPlusCompiler.StaticChecker.Syntax
 {
     enum SyntaxKind
     {

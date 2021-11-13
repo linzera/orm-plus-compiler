@@ -1,4 +1,6 @@
+using OrmPlusCompiler.StaticChecker.Syntax;
 namespace OrmPlusCompiler.StaticChecker;
+
 class Evaluator
 {
     private ExpressionSyntax _root;

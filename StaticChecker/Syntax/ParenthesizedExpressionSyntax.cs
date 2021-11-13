@@ -1,5 +1,5 @@
 
-namespace OrmPlusCompiler.StaticChecker;
+namespace OrmPlusCompiler.StaticChecker.Syntax;
 
 sealed class ParenthesizedExpressionSyntax : ExpressionSyntax
 {
