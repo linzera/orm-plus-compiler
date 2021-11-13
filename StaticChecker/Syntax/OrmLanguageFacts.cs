@@ -41,4 +41,19 @@ class OrmLanguageFacts
                 return 0;
         }
     }
+
+    public static SyntaxKind GetKeywordKind(string text)
+    {
+        var normalizedText = text.ToLower();
+
+        switch (text)
+        {
+            case "true":
+                return SyntaxKind.TrueKeyword;
+            case "falso":
+                return SyntaxKind.FalseKeyword;
+            default:
+                return SyntaxKind.IdentifierToken;
+        }
+    }
 }

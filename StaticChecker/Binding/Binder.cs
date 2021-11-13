@@ -54,7 +54,7 @@ internal sealed class Binder
 
     private BoundExpression BindLiteralExpression(LiteralExpressionSyntax syntax)
     {
-        var value = syntax.LiteralToken.Value as int? ?? 0;
+        var value = syntax.Value ?? 0;
         return new BoundLiteralExpression(value);
     }
 

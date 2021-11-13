@@ -2,6 +2,7 @@ namespace OrmPlusCompiler.StaticChecker.Syntax
 {
     enum SyntaxKind
     {
+        // Tokens
         NumberToken,
         SemiColonToken,
         OpenBracketToken,
@@ -28,13 +29,18 @@ namespace OrmPlusCompiler.StaticChecker.Syntax
         WhiteSpaceToken,
         BadExpressionToken,
         EndOfFileToken,
+        IdentifierToken,
 
-        // Expressions
+        // Expressoes
         NumberExpression,
         BinaryExpression,
         ParenthesizedExpression,
         UnaryExpression,
         LiteralExpression,
+
+        // Palavras reservadas
+        TrueKeyword,
+        FalseKeyword,
     }
 }
 
