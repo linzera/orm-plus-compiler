@@ -34,6 +34,7 @@ namespace OrmPlusCompiler.StaticChecker.Syntax
         BinaryExpression,
         ParenthesizedExpression,
         UnaryExpression,
+        LiteralExpression,
     }
 }
 

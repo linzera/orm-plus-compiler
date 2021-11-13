@@ -1,5 +1,6 @@
 ﻿using OrmPlusCompiler.StaticChecker;
 using OrmPlusCompiler.StaticChecker.Syntax;
+using OrmPlusCompiler.StaticChecker.Binding;
 
 class Program
 {
@@ -32,12 +33,15 @@ class Program
             }
 
             var syntaxTree = SyntaxTree.Parse(line);
+            var binder = new Binder();
+            var boundExpression = binder.BindExpression(syntaxTree.Root);
+
+            var diagnostics = syntaxTree.Diagnostics.Concat(binder.Diagnostics).ToArray();
 
             if (showTree)
                 TreePrint(syntaxTree.Root);
 
-
-            if (syntaxTree.Diagnostics.Any())
+            if (diagnostics.Any())
             {
                 foreach (var diagnostic in syntaxTree.Diagnostics)
                 {
@@ -46,7 +50,7 @@ class Program
             }
             else
             {
-                var e = new Evaluator(syntaxTree.Root);
+                var e = new Evaluator(boundExpression);
                 var result = e.Evaluate();
                 Console.WriteLine(result);
             }
