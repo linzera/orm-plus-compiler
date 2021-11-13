@@ -13,19 +13,19 @@ class Lexer
 
     public IEnumerable<string> Diagnostics => _diagnostics;
 
-    private char Current
+    private char Current => Peek(0);
+    private char Lookahead => Peek(1);
+
+    private char Peek(int offset)
     {
-        get
+        var index = _position + offset;
+
+        if (_position >= _text.Length)
         {
-
-            if (_position >= _text.Length)
-            {
-                return '\0';
-            }
-
-            return _text[_position];
-
+            return '\0';
         }
+
+        return _text[_position];
     }
 
     private void Next()
