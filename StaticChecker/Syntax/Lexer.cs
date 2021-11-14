@@ -25,7 +25,7 @@ class Lexer
             return '\0';
         }
 
-        return _text[_position];
+        return _text[index];
     }
 
     private void Next()
@@ -85,6 +85,12 @@ class Lexer
         {
             var atom = OrmLanguageFacts.singleOperatorMapping[Current];
             return new SyntaxToken(atom.Kind, _position++, atom.TextRepresentation, null);
+        }
+
+        if (OrmLanguageFacts.isCurrentAndLookaheadDoubleOperator(Current, Lookahead))
+        {
+            var atom = OrmLanguageFacts.doubleOperatorMapping[OrmLanguageFacts.buildStringFromCurrentAndLookahead(Current, Lookahead)];
+            return new SyntaxToken(atom.Kind, _position += 2, atom.TextRepresentation, null);
         }
 
         _diagnostics.Add($"ERROR: bad character input: '{Current}'");

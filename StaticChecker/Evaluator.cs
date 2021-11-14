@@ -53,6 +53,10 @@ sealed class Evaluator
                     return (int)left * (int)right;
                 case BoundBinaryOperatorKind.Division:
                     return (int)left / (int)right;
+                case BoundBinaryOperatorKind.Equals:
+                    return Equals(left, right);
+                case BoundBinaryOperatorKind.NotEquals:
+                    return !Equals(left, right);
                 default:
                     throw new Exception($"Unexpected binary operator {b.Op.Kind}");
             }

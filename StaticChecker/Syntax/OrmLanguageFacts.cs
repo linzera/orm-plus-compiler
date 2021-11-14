@@ -12,6 +12,21 @@ class OrmLanguageFacts
         {'/', new Atom(SyntaxKind.SlashToken, "S19", "/")},
     };
 
+    public static Dictionary<String, Atom> doubleOperatorMapping = new Dictionary<String, Atom>{
+        {"==", new Atom(SyntaxKind.EqualsEqualsToken, "S14", "==")},
+        {"!=", new Atom(SyntaxKind.BangEquals, "S15", "!=")}
+    };
+
+    public static String buildStringFromCurrentAndLookahead(char current, char lookahead)
+    {
+        return string.Concat(current, lookahead);
+    }
+    public static bool isCurrentAndLookaheadDoubleOperator(char current, char lookahead)
+    {
+        String operatorText = buildStringFromCurrentAndLookahead(current, lookahead);
+        return doubleOperatorMapping.ContainsKey(operatorText);
+    }
+
 
     public static int GetUnaryOperatorPrecedence(SyntaxKind kind)
     {
@@ -19,23 +34,26 @@ class OrmLanguageFacts
         {
             case SyntaxKind.PlusToken:
             case SyntaxKind.MinusToken:
-                return 3;
+                return 4;
 
             default:
                 return 0;
         }
     }
 
-    // Agora conseguimos adicionar prioridades ao tokens com o uso de precedentes.
     public static int GetBinaryOperatorPrecedence(SyntaxKind kind)
     {
         switch (kind)
         {
             case SyntaxKind.StarToken:
             case SyntaxKind.SlashToken:
-                return 2;
+                return 3;
             case SyntaxKind.PlusToken:
             case SyntaxKind.MinusToken:
+                return 2;
+
+            case SyntaxKind.EqualsEqualsToken:
+            case SyntaxKind.BangEquals:
                 return 1;
             default:
                 return 0;
