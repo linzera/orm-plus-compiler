@@ -1,9 +1,0 @@
-
-
-programa Calculadora declaracoes tipo-var inteiro: x; fim-declaracoes
-    funcoes 
-    tipo-func inteiro: soma(tipo-param inteiro: y,z) {
-        retorna y + z;
-    }
-    fim-funcoes
-fim-programa

@@ -1,61 +1,70 @@
-namespace OrmPlusCompiler.StaticChecker.Binding;
+﻿using orm_plus_compiler.StaticChecker.Binding.Abstraction;
+using orm_plus_compiler.StaticChecker.Binding.Expression;
+using orm_plus_compiler.StaticChecker.Binding.Operator_Class;
+using orm_plus_compiler.StaticChecker.Enum;
+using orm_plus_compiler.StaticChecker.Syntax.Structs;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-using OrmPlusCompiler.StaticChecker.Syntax;
-
-internal sealed class Binder
+namespace orm_plus_compiler.StaticChecker.Binding
 {
-    private readonly List<string> _diagnostics = new List<string>();
-    public IEnumerable<string> Diagnostics => _diagnostics;
-
-    public BoundExpression BindExpression(ExpressionSyntax syntax)
+    internal sealed class Binder
     {
-        switch (syntax.Kind)
+        private readonly List<string> _diagnostics = new List<string>();
+        public IEnumerable<string> Diagnostics => _diagnostics;
+
+        public BoundExpression BindExpression(ExpressionSyntax syntax)
         {
-            case SyntaxKind.LiteralExpression:
-                return BindLiteralExpression((LiteralExpressionSyntax)syntax);
-            case SyntaxKind.BinaryExpression:
-                return BindBinaryExpression((BinaryExpressionSyntax)syntax);
-            case SyntaxKind.UnaryExpression:
-                return BindUnaryExpression((UnaryExpressionSyntax)syntax);
-            default:
-                throw new Exception($"Unexpected syntax {syntax.Kind}");
-        }
-    }
-
-    private BoundExpression BindUnaryExpression(UnaryExpressionSyntax syntax)
-    {
-        var boundOperand = BindExpression(syntax.Operand);
-        var boundOperator = BoundUnaryOperator.Bind(syntax.OperatorToken.Kind, boundOperand.Type);
-
-
-        if (boundOperator == null)
-        {
-            _diagnostics.Add($"Unary operator '{syntax.OperatorToken.Text}' is not defined for type {boundOperand.Type}");
-            return boundOperand;
+            switch (syntax.Kind)
+            {
+                case SyntaxKind.LiteralExpression:
+                    return BindLiteralExpression((LiteralExpressionSyntax)syntax);
+                case SyntaxKind.BinaryExpression:
+                    return BindBinaryExpression((BinaryExpressionSyntax)syntax);
+                case SyntaxKind.UnaryExpression:
+                    return BindUnaryExpression((UnaryExpressionSyntax)syntax);
+                default:
+                    throw new Exception($"Unexpected syntax {syntax.Kind}");
+            }
         }
 
-        return new BoundUnaryExpression(boundOperator, boundOperand);
-    }
-
-    private BoundExpression BindBinaryExpression(BinaryExpressionSyntax syntax)
-    {
-        var left = BindExpression(syntax.Left);
-        var right = BindExpression(syntax.Right);
-        var boundOperator = BoundBinaryOperator.Bind(syntax.OperatorToken.Kind, left.Type, right.Type);
-
-        if (boundOperator == null)
+        private BoundExpression BindUnaryExpression(UnaryExpressionSyntax syntax)
         {
-            _diagnostics.Add($"Binary operator '{syntax.OperatorToken.Text}' is not defined for type {left.Type} and {right.Type}");
-            return left;
+            var boundOperand = BindExpression(syntax.Operand);
+            var boundOperator = BoundUnaryOperator.Bind(syntax.OperatorToken.Kind, boundOperand.Type);
+
+
+            if (boundOperator == null)
+            {
+                _diagnostics.Add($"Unary operator '{syntax.OperatorToken.Text}' is not defined for type {boundOperand.Type}");
+                return boundOperand;
+            }
+
+            return new BoundUnaryExpression(boundOperator, boundOperand);
         }
 
-        return new BoundBinaryExpression(left, boundOperator, right);
-    }
+        private BoundExpression BindBinaryExpression(BinaryExpressionSyntax syntax)
+        {
+            var left = BindExpression(syntax.Left);
+            var right = BindExpression(syntax.Right);
+            var boundOperator = BoundBinaryOperator.Bind(syntax.OperatorToken.Kind, left.Type, right.Type);
 
-    private BoundExpression BindLiteralExpression(LiteralExpressionSyntax syntax)
-    {
-        var value = syntax.Value ?? 0;
-        return new BoundLiteralExpression(value);
-    }
+            if (boundOperator == null)
+            {
+                _diagnostics.Add($"Binary operator '{syntax.OperatorToken.Text}' is not defined for type {left.Type} and {right.Type}");
+                return left;
+            }
 
+            return new BoundBinaryExpression(left, boundOperator, right);
+        }
+
+        private BoundExpression BindLiteralExpression(LiteralExpressionSyntax syntax)
+        {
+            var value = syntax.Value ?? 0;
+            return new BoundLiteralExpression(value);
+        }
+    }
 }
