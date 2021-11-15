@@ -1,4 +1,5 @@
-﻿using System;
+﻿using orm_plus_compiler.StaticChecker.Syntax.Utils;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace orm_plus_compiler.StaticChecker.Files
 {
     static class FileManager
     {
-        public static List<string> FileReader()
+        public static Code FileReader()
         {
             while (true)
             {
@@ -24,7 +25,8 @@ namespace orm_plus_compiler.StaticChecker.Files
                     try
                     {
                         StreamReader rd = new StreamReader(path);
-                        List<string> linesList = new List<string>();
+                        List<CodeLine> codeLineList = new List<CodeLine>();
+                        int index = 1;
 
                         while (!rd.EndOfStream)
                         {
@@ -33,13 +35,15 @@ namespace orm_plus_compiler.StaticChecker.Files
                             if (!string.IsNullOrWhiteSpace(line) || !string.IsNullOrEmpty(line))
                             {
                                 string filteredLine = lineFilter(line.Split(' '));
-                                linesList.Add(filteredLine);
+                                CodeLine codeLine = new CodeLine(index, filteredLine);
+                                codeLineList.Add(codeLine);
+                                index++;
                             }
-
                         }
 
-                        linesList.Add(Path.GetFileNameWithoutExtension(path));
-                        return linesList;
+                        Code code = new Code(Path.GetFileNameWithoutExtension(path), Path.GetExtension(path), codeLineList);
+
+                        return code;
                     }
                     catch (FileNotFoundException)
                     {

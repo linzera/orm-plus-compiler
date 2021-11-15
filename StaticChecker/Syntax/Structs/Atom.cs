@@ -7,25 +7,10 @@ using System.Threading.Tasks;
 
 namespace orm_plus_compiler.StaticChecker.Syntax.Structs
 {
-    internal class Atom
+    abstract class Atom
     {
-        public SyntaxKind Kind { get; }
-        public string Code { get; }
-        public string TextRepresentation { get; }
-
-        public char Operator
-        {
-            get
-            {
-                return this.TextRepresentation[0];
-            }
-        }
-
-        public Atom(SyntaxKind kind, string code, string textRepresentation)
-        {
-            Kind = kind;
-            Code = code;
-            TextRepresentation = textRepresentation;
-        }
+        public abstract SyntaxKind Kind { get; }
+        public abstract string CodeId { get; }
+        public abstract string TextRepresentation { get; }
     }
 }

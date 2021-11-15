@@ -31,7 +31,6 @@ namespace orm_plus_compiler.StaticChecker.Syntax.Utils
                     tokens.Add(token);
                 }
 
-
             } while (token.Kind != SyntaxKind.EndOfFileToken);
 
             _tokens = tokens.ToArray();

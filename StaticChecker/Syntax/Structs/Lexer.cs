@@ -86,6 +86,10 @@ namespace orm_plus_compiler.StaticChecker.Syntax.Structs
                 var text = _text.Substring(start, length);
                 var kind = OrmLanguageFacts.GetKeywordKind(text);
 
+                if(length >= 30){
+                    return new TruncatedSyntaxToken(kind, start, text, text.Substring(0,30), null);
+                }
+
                 return new SyntaxToken(kind, start, text, null);
             }
 

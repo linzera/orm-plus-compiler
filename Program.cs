@@ -14,10 +14,7 @@ namespace orm_plus_compiler
         {
             var showTree = false;
 
-         /*   List<string> lines = FileManager.FileReader();
-
-            string fileName = lines.Last();
-            lines.Remove(fileName); */
+            //Code code = FileManager.FileReader();
 
             while (true)
             {

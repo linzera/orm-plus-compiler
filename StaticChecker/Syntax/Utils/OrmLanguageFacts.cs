@@ -10,18 +10,18 @@ namespace orm_plus_compiler.StaticChecker.Syntax.Utils
 {
     class OrmLanguageFacts
     {
-        public static Dictionary<Char, Atom> singleOperatorMapping = new Dictionary<Char, Atom>{
-            {'(', new Atom(SyntaxKind.OpenParenthesisToken, "S06", "(")},
-            {')', new Atom(SyntaxKind.CloseParenthesisToken, "S07", ")")},
-            {'+', new Atom(SyntaxKind.PlusToken, "S16", "+")},
-            {'-', new Atom(SyntaxKind.MinusToken, "S17", "-")},
-            {'*', new Atom(SyntaxKind.StarToken, "S18", "*")},
-            {'/', new Atom(SyntaxKind.SlashToken, "S19", "/")},
+        public static Dictionary<Char, OperatorAtom> singleOperatorMapping = new Dictionary<Char, OperatorAtom>{
+            {'(', new OperatorAtom(SyntaxKind.OpenParenthesisToken, "S06", "(")},
+            {')', new OperatorAtom(SyntaxKind.CloseParenthesisToken, "S07", ")")},
+            {'+', new OperatorAtom(SyntaxKind.PlusToken, "S16", "+")},
+            {'-', new OperatorAtom(SyntaxKind.MinusToken, "S17", "-")},
+            {'*', new OperatorAtom(SyntaxKind.StarToken, "S18", "*")},
+            {'/', new OperatorAtom(SyntaxKind.SlashToken, "S19", "/")},
         };
 
-        public static Dictionary<String, Atom> doubleOperatorMapping = new Dictionary<String, Atom>{
-            {"==", new Atom(SyntaxKind.EqualsEqualsToken, "S14", "==")},
-            {"!=", new Atom(SyntaxKind.BangEquals, "S15", "!=")}
+        public static Dictionary<String, DoubleOperatorAtom> doubleOperatorMapping = new Dictionary<String, DoubleOperatorAtom>{
+            {"==", new DoubleOperatorAtom(SyntaxKind.EqualsEqualsToken, "S14", "==")},
+            {"!=", new DoubleOperatorAtom(SyntaxKind.BangEquals, "S15", "!=")}
         };
 
         public static String buildStringFromCurrentAndLookahead(char current, char lookahead)
