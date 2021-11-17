@@ -17,11 +17,21 @@ namespace orm_plus_compiler.StaticChecker.Syntax.Utils
             {'-', new OperatorAtom(SyntaxKind.MinusToken, "S17", "-")},
             {'*', new OperatorAtom(SyntaxKind.StarToken, "S18", "*")},
             {'/', new OperatorAtom(SyntaxKind.SlashToken, "S19", "/")},
+            {';', new OperatorAtom(SyntaxKind.Semicolon, "S01", ";")},
+            {'[', new OperatorAtom(SyntaxKind.OpenSquareBracket, "S02", "[")},
+            {']', new OperatorAtom(SyntaxKind.CloseSquareBracket, "S03", "]")},
+            {':', new OperatorAtom(SyntaxKind.TwoPoints, "S04", ":")},
+            {',', new OperatorAtom(SyntaxKind.Comma, "S05", ",")},
+            {'?', new OperatorAtom(SyntaxKind.QuestionMark, "S08", "?")},
+            {'{', new OperatorAtom(SyntaxKind.RightBrace, "S09", "{")},
+            {'}', new OperatorAtom(SyntaxKind.LeftBrace, "S10", "}")},
         };
 
         public static Dictionary<String, DoubleOperatorAtom> doubleOperatorMapping = new Dictionary<String, DoubleOperatorAtom>{
             {"==", new DoubleOperatorAtom(SyntaxKind.EqualsEqualsToken, "S14", "==")},
-            {"!=", new DoubleOperatorAtom(SyntaxKind.BangEquals, "S15", "!=")}
+            {"!=", new DoubleOperatorAtom(SyntaxKind.BangEquals, "S15", "!=")},
+            {"<=", new DoubleOperatorAtom(SyntaxKind.SmallerOrEqualsThan, "S10", "<=")},
+            {">=", new DoubleOperatorAtom(SyntaxKind.BiggerOrEqualsThan, "S13", ">=")},
         };
 
         public static String buildStringFromCurrentAndLookahead(char current, char lookahead)
@@ -77,6 +87,20 @@ namespace orm_plus_compiler.StaticChecker.Syntax.Utils
                     return SyntaxKind.TrueKeyword;
                 case "falso":
                     return SyntaxKind.FalseKeyword;
+                case "programa":
+                    return SyntaxKind.InitialProgramKeyword;
+                case "fim-programa":
+                    return SyntaxKind.FinalProgramKeyword;
+                case "declaracoes":
+                    return SyntaxKind.InitialStatementsKeyword;
+                case "fim-declaracoes":
+                    return SyntaxKind.FinalStatementsKeyword;
+                case "funcoes":
+                    return SyntaxKind.InitialFunctionKeyword;
+                case "fim-funcoes":
+                    return SyntaxKind.FinalFunctionKeyword;
+                case "tipo-var":
+                    return SyntaxKind.VarTypeKeyword;
                 default:
                     return SyntaxKind.IdentifierToken;
             }

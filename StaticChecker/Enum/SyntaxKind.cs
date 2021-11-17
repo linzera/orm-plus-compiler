@@ -22,6 +22,18 @@ namespace orm_plus_compiler.StaticChecker.Enum
         BadExpressionToken,
         EndOfFileToken,
         IdentifierToken,
+        SmallerOrEqualsThan,
+        BiggerOrEqualsThan,
+        SmallerThan,
+        BiggerThan,
+        TwoPoints,
+        Semicolon,
+        Comma,
+        OpenSquareBracket,
+        CloseSquareBracket,
+        LeftBrace,
+        RightBrace,
+        QuestionMark,
 
         // Expressoes
         BinaryExpression,
@@ -32,5 +44,13 @@ namespace orm_plus_compiler.StaticChecker.Enum
         // Palavras reservadas
         TrueKeyword,
         FalseKeyword,
+        InitialProgramKeyword,
+        FinalProgramKeyword,
+        InitialStatementsKeyword,
+        FinalStatementsKeyword,
+        InitialFunctionKeyword,
+        FinalFunctionKeyword,
+        VarTypeKeyword,
+
     }
 }
