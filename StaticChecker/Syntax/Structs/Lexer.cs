@@ -1,10 +1,5 @@
 ﻿using orm_plus_compiler.StaticChecker.Enum;
 using orm_plus_compiler.StaticChecker.Syntax.Utils;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace orm_plus_compiler.StaticChecker.Syntax.Structs
 {
@@ -12,14 +7,14 @@ namespace orm_plus_compiler.StaticChecker.Syntax.Structs
     {
         private readonly string _text;
         private int _position;
-        private List<string> _diagnostics = new List<string>();
+        private DiagnosticBag _diagnostics = new DiagnosticBag();
 
         public Lexer(string text)
         {
             this._text = text;
         }
 
-        public IEnumerable<string> Diagnostics => _diagnostics;
+        public DiagnosticBag Diagnostics => _diagnostics;
 
         private char Current => Peek(0);
         private char Lookahead => Peek(1);
@@ -47,10 +42,10 @@ namespace orm_plus_compiler.StaticChecker.Syntax.Structs
             if (_position >= _text.Length)
                 return new SyntaxToken(SyntaxKind.EndOfFileToken, _position, "\0", null);
 
+            var start = _position;
+
             if (char.IsDigit(Current))
             {
-                var start = _position;
-
                 while (char.IsDigit(Current))
                     Next();
 
@@ -58,15 +53,13 @@ namespace orm_plus_compiler.StaticChecker.Syntax.Structs
                 var text = _text.Substring(start, digitLength);
                 if (!int.TryParse(text, out int value))
                 {
-                    _diagnostics.Add($"The number {_text} can not be represented as an Int32");
+                    _diagnostics.ReportInvalidNumber(new TextSpan(start, digitLength), _text, typeof(int));
                 }
                 return new SyntaxToken(SyntaxKind.NumberToken, start, text, value);
             }
 
             if (char.IsWhiteSpace(Current))
             {
-                var start = _position;
-
                 while (char.IsWhiteSpace(Current))
                     Next();
 
@@ -77,17 +70,16 @@ namespace orm_plus_compiler.StaticChecker.Syntax.Structs
 
             if (char.IsLetter(Current))
             {
-                var start = _position;
-
-                while (char.IsLetter(Current))
+                while (char.IsLetter(Current) || Current.Equals('-'))
                     Next();
 
                 var length = _position - start;
                 var text = _text.Substring(start, length);
                 var kind = OrmLanguageFacts.GetKeywordKind(text);
 
-                if(length >= 30){
-                    return new TruncatedSyntaxToken(kind, start, text, text.Substring(0,30), null);
+                if (length >= 30)
+                {
+                    return new TruncatedSyntaxToken(kind, start, text, text.Substring(0, 30), null);
                 }
 
                 return new SyntaxToken(kind, start, text, null);
@@ -102,10 +94,11 @@ namespace orm_plus_compiler.StaticChecker.Syntax.Structs
             if (OrmLanguageFacts.isCurrentAndLookaheadDoubleOperator(Current, Lookahead))
             {
                 var atom = OrmLanguageFacts.doubleOperatorMapping[OrmLanguageFacts.buildStringFromCurrentAndLookahead(Current, Lookahead)];
-                return new SyntaxToken(atom.Kind, _position += 2, atom.TextRepresentation, null);
+                _position += 2;
+                return new SyntaxToken(atom.Kind, start, atom.TextRepresentation, null);
             }
 
-            _diagnostics.Add($"ERROR: bad character input: '{Current}'");
+            _diagnostics.ReportBadCharacter(_position, Current);
             return new SyntaxToken(SyntaxKind.BadExpressionToken, _position++, _text.Substring(_position - 1, 1), null);
         }
 

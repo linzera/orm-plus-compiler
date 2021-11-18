@@ -1,4 +1,5 @@
 ﻿using orm_plus_compiler.StaticChecker.Enum;
+using orm_plus_compiler.StaticChecker.Syntax.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,12 +8,14 @@ using System.Threading.Tasks;
 
 namespace orm_plus_compiler.StaticChecker.Syntax.Structs
 {
-    class SyntaxToken : SyntaxNode
+    public class SyntaxToken : SyntaxNode
     {
         public override SyntaxKind Kind { get; }
         public int Position { get; }
         public string Text { get; }
         public object Value { get; }
+        public TextSpan Span => new TextSpan(Position, Text.Length);
+
         public override IEnumerable<SyntaxNode> GetChildren()
         {
             return Enumerable.Empty<SyntaxNode>();

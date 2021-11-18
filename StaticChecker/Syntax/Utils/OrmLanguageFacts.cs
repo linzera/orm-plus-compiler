@@ -23,8 +23,8 @@ namespace orm_plus_compiler.StaticChecker.Syntax.Utils
             {':', new OperatorAtom(SyntaxKind.TwoPoints, "S04", ":")},
             {',', new OperatorAtom(SyntaxKind.Comma, "S05", ",")},
             {'?', new OperatorAtom(SyntaxKind.QuestionMark, "S08", "?")},
-            {'{', new OperatorAtom(SyntaxKind.RightBrace, "S09", "{")},
-            {'}', new OperatorAtom(SyntaxKind.LeftBrace, "S10", "}")},
+            {'{', new OperatorAtom(SyntaxKind.LeftBrace, "S09", "{")},
+            {'}', new OperatorAtom(SyntaxKind.RightBrace, "S10", "}")},
         };
 
         public static Dictionary<String, DoubleOperatorAtom> doubleOperatorMapping = new Dictionary<String, DoubleOperatorAtom>{
@@ -80,6 +80,8 @@ namespace orm_plus_compiler.StaticChecker.Syntax.Utils
         public static SyntaxKind GetKeywordKind(string text)
         {
             var normalizedText = text.ToLower();
+
+            Console.WriteLine(normalizedText);
 
             switch (text)
             {

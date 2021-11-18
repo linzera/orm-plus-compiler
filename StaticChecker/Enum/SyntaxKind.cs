@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace orm_plus_compiler.StaticChecker.Enum
 {
-    internal enum SyntaxKind
+    public enum SyntaxKind
     {
         // Tokens
         NumberToken,
@@ -40,6 +40,7 @@ namespace orm_plus_compiler.StaticChecker.Enum
         ParenthesizedExpression,
         UnaryExpression,
         LiteralExpression,
+        BracketsizedExpression,
 
         // Palavras reservadas
         TrueKeyword,
@@ -51,6 +52,5 @@ namespace orm_plus_compiler.StaticChecker.Enum
         InitialFunctionKeyword,
         FinalFunctionKeyword,
         VarTypeKeyword,
-
     }
 }
