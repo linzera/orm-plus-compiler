@@ -70,15 +70,33 @@ namespace orm_plus_compiler.StaticChecker.Syntax.Utils
             return new SyntaxTree(expression, endOfFileToken, Diagnostics);
         }
 
+        public ExpressionSyntax ParseExpression()
+        {
+            return ParseAssignmentExpression();
+        }
 
-        private ExpressionSyntax ParseExpression(int parentPrecedence = 0)
+        private ExpressionSyntax ParseAssignmentExpression()
+        {
+            if (Peek(0).Kind == SyntaxKind.IdentifierToken &&
+                 Peek(1).Kind == SyntaxKind.TwoPointsEqualsToken)
+            {
+                var identifierToken = NextToken();
+                var operatorToken = NextToken();
+                var right = ParseAssignmentExpression();
+                return new AssingmentExpressionSyntax(identifierToken, operatorToken, right);
+            }
+
+            return ParseBinaryExpression();
+        }
+
+        private ExpressionSyntax ParseBinaryExpression(int parentPrecedence = 0)
         {
             ExpressionSyntax left;
             var unaryOperatorPrecedence = OrmLanguageFacts.GetUnaryOperatorPrecedence(Current.Kind);
             if (unaryOperatorPrecedence != 0 && unaryOperatorPrecedence >= parentPrecedence)
             {
                 var operatorToken = NextToken();
-                var operand = ParseExpression(unaryOperatorPrecedence);
+                var operand = ParseBinaryExpression(unaryOperatorPrecedence);
                 left = new UnaryExpressionSyntax(operatorToken, operand);
             }
             else
@@ -96,7 +114,7 @@ namespace orm_plus_compiler.StaticChecker.Syntax.Utils
                 }
 
                 var operatorToken = NextToken();
-                var right = ParseExpression(precedence);
+                var right = ParseBinaryExpression(precedence);
                 left = new BinaryExpressionSyntax(left, operatorToken, right);
             }
 
@@ -122,6 +140,11 @@ namespace orm_plus_compiler.StaticChecker.Syntax.Utils
                         var keywordToken = NextToken();
                         var value = keywordToken.Kind == SyntaxKind.TrueKeyword;
                         return new LiteralExpressionSyntax(keywordToken, value);
+                    }
+                case SyntaxKind.IdentifierToken:
+                    {
+                        var identifierToken = NextToken();
+                        return new NameExpressionSyntax(identifierToken);
                     }
                 default:
                     var numberToken = MatchToken(SyntaxKind.NumberToken);
