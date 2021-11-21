@@ -1,4 +1,5 @@
-﻿using orm_plus_compiler.StaticChecker.Syntax.Utils;
+﻿using orm_plus_compiler.StaticChecker.Syntax.Structs;
+using orm_plus_compiler.StaticChecker.Syntax.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -63,11 +64,87 @@ namespace orm_plus_compiler.StaticChecker.Files
 
         }
 
-        public static void FileWriter()
+        private static List<string> FormateSymbolTableReport(List<SymbolTableRow> symbolTableRow)
         {
-           /* StreamWriter wr = new StreamWriter(@"C:\Users\anapa\OneDrive\Documents\GitHub\Faculdade\orm-plus-compiler\Test.LEX", true);
-            wr.WriteLine("Este é o texto a escrever no arquivo");
-            wr.Close();*/
+
+            List<string> tableRows = new List<string>();
+            string index = string.Empty, 
+                code = string.Empty, 
+                lex = string.Empty, 
+                tokenType = string.Empty, 
+                lines = string.Empty,
+                qtdA = string.Empty,
+                qtdD = string.Empty;
+
+
+            foreach (SymbolTableRow row in symbolTableRow)
+            {
+
+                if (row.Index < 10)
+                    index = "   00" + row.Index + "   |";
+                else if (row.Index < 100)
+                    index = " 0" + row.Index + "   |";
+                else
+                    index = " " + row.Index + "   |";
+
+                code = "  S00  |";
+
+
+                if (row.SyntaxToken.GetType() == typeof(TruncatedSyntaxToken))
+                {
+                    TruncatedSyntaxToken truncatedText = row.SyntaxToken as TruncatedSyntaxToken;
+                    lex = truncatedText.TruncatedText + "  |";
+                    qtdA = "   " + truncatedText.Text.Length + "    |";
+                    qtdD = "   " + truncatedText.TruncatedText.Length + "    |";
+                }
+                else
+                {
+                    lex = row.SyntaxToken.Text;
+
+                    while (lex.Length <= 30)
+                        lex = lex + " ";
+                    lex = lex + " |";
+
+                    qtdA = "   " + row.SyntaxToken.Text.Length + "    |";
+                    qtdD = qtdA;
+                }
+
+                if (row.SyntaxToken.Kind == Enum.SyntaxKind.IntegerToken)
+                    tokenType = "  INT   |";
+                else if(row.SyntaxToken.Kind == Enum.SyntaxKind.DoubleToken)
+                    tokenType = "  REAL  |";
+                else if(row.SyntaxToken.Kind == Enum.SyntaxKind.NotReservedKeyword)
+                    tokenType = "  VOID  |";
+
+                lines = "  " + string.Join(", ", row.IndexLineList);
+
+
+                tableRows.Add(index + code + lex + qtdA + qtdD + tokenType + lines);
+            }
+
+
+            return tableRows;
+
+        }
+
+        public static void FileWriter(List<SymbolTableRow> symbolTableRow)
+        {
+            // If directory does not exist, create it.  
+            if (File.Exists(@"D:\Pessoal\Faculdade\Compiladores\Test.LEX"))
+                File.Delete(@"D:\Pessoal\Faculdade\Compiladores\Test.LEX");
+
+            Console.WriteLine("Creating the file.LEX...");
+            StreamWriter symbolTableFile = new StreamWriter(@"D:\Pessoal\Faculdade\Compiladores\Test.LEX", true);
+            Console.WriteLine("File Create!");
+            Console.WriteLine("Writing...\n \n");
+            symbolTableFile.WriteLine("Tabela de simbolos\n");
+            symbolTableFile.WriteLine("  Index  |  Cod  |              Lexeme            |  QtdA  |  QtdD  |  Tipo  |  Linhas");
+            List<string> stringSymbolTableRow = FormateSymbolTableReport(symbolTableRow);
+
+            foreach (string s in stringSymbolTableRow)
+                symbolTableFile.WriteLine(s);
+
+            symbolTableFile.Close();
         }
 
         private static string lineFilter(string[] line)
