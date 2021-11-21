@@ -12,8 +12,6 @@ namespace orm_plus_compiler.StaticChecker.Enum
 
         LiteralExpression,
 
-        BinaryExpression,
-        VariableExpression,
-        AssignmentExpression
+        BinaryExpression
     }
 }

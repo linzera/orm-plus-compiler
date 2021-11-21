@@ -105,7 +105,12 @@ namespace orm_plus_compiler.StaticChecker.Syntax.Structs
                 return new SyntaxToken(atom.Kind, _position++, atom.TextRepresentation, null);
             }
 
-
+            if (OrmLanguageFacts.isCurrentAndLookaheadDoubleOperator(Current, Lookahead))
+            {
+                var atom = OrmLanguageFacts.doubleOperatorMapping[OrmLanguageFacts.buildStringFromCurrentAndLookahead(Current, Lookahead)];
+                _position += 2;
+                return new SyntaxToken(atom.Kind, start, atom.TextRepresentation, null);
+            }
 
             _diagnostics.ReportBadCharacter(_position, Current);
             return new SyntaxToken(SyntaxKind.BadExpressionToken, _position++, _text.Substring(_position - 1, 1), null);
