@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace orm_plus_compiler.StaticChecker.Syntax.Structs
 {
-    public abstract class SyntaxNode
+    abstract class SyntaxNode
     {
         public abstract SyntaxKind Kind { get; }
 

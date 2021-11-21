@@ -40,10 +40,10 @@ namespace orm_plus_compiler
                 }
 
                 var syntaxTree = SyntaxTree.Parse(line);
-                var compilation = new Compilation(syntaxTree);
-                var result = compilation.Evaluate();
+                var binder = new Binder();
+                var boundExpression = binder.BindExpression(syntaxTree.Root);
 
-                var diagnostics = result.Diagnostics;
+                var diagnostics = syntaxTree.Diagnostics.Concat(binder.Diagnostics).ToArray();
 
                 if (showTree)
                     TreePrint(syntaxTree.Root);
@@ -52,31 +52,14 @@ namespace orm_plus_compiler
                 {
                     foreach (var diagnostic in diagnostics)
                     {
-                        Console.WriteLine();
-
-                        Console.ForegroundColor = ConsoleColor.DarkRed;
                         Console.WriteLine(diagnostic);
-                        Console.ResetColor();
-
-                        var prefix = line.Substring(0, diagnostic.Span.Start);
-                        var error = line.Substring(diagnostic.Span.Start, diagnostic.Span.Length);
-                        var suffix = line.Substring(diagnostic.Span.End);
-
-                        Console.Write("    ");
-                        Console.Write(prefix);
-
-                        Console.ForegroundColor = ConsoleColor.DarkRed;
-                        Console.Write(error);
-                        Console.ResetColor();
-
-                        Console.Write(suffix);
-
-                        Console.WriteLine();
                     }
                 }
                 else
                 {
-                    Console.WriteLine(result.Value);
+                    var e = new Evaluator(boundExpression);
+                    var result = e.Evaluate();
+                    Console.WriteLine(result);
                 }
             }
         }

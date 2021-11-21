@@ -85,7 +85,7 @@ namespace orm_plus_compiler.StaticChecker.Binding
 
             if (boundOperator == null)
             {
-                _diagnostics.ReportUndefinedUnaryOperator(syntax.OperatorToken.Span, syntax.OperatorToken.Text, boundOperand.Type);
+                _diagnostics.Add($"Unary operator '{syntax.OperatorToken.Text}' is not defined for type {boundOperand.Type}");
                 return boundOperand;
             }
 
@@ -100,7 +100,7 @@ namespace orm_plus_compiler.StaticChecker.Binding
 
             if (boundOperator == null)
             {
-                _diagnostics.ReportUndefinedBinaryOperator(syntax.OperatorToken.Span, syntax.OperatorToken.Text, left.Type, right.Type);
+                _diagnostics.Add($"Binary operator '{syntax.OperatorToken.Text}' is not defined for type {left.Type} and {right.Type}");
                 return left;
             }
 

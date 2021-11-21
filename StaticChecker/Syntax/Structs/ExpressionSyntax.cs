@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace orm_plus_compiler.StaticChecker.Syntax.Structs
 {
-    public abstract class ExpressionSyntax : SyntaxNode
+    abstract class ExpressionSyntax : SyntaxNode
     {
     }
 }
