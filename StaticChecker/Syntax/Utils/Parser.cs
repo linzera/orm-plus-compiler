@@ -1,13 +1,18 @@
 ﻿using orm_plus_compiler.StaticChecker.Enum;
 using orm_plus_compiler.StaticChecker.Syntax.Structs;
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
 namespace orm_plus_compiler.StaticChecker.Syntax.Utils
 {
     class Parser
     {
         private SyntaxToken[] _tokens;
         private int _position;
-        private DiagnosticBag _diagnostics = new DiagnosticBag();
+        private List<string> _diagnostics = new List<string>();
 
         public Parser(string text)
         {
@@ -32,7 +37,7 @@ namespace orm_plus_compiler.StaticChecker.Syntax.Utils
             _diagnostics.AddRange(lexer.Diagnostics);
         }
 
-        public DiagnosticBag Diagnostics => _diagnostics;
+        public IEnumerable<string> Diagnostics => _diagnostics;
 
         private SyntaxToken Peek(int offset)
         {
@@ -58,7 +63,8 @@ namespace orm_plus_compiler.StaticChecker.Syntax.Utils
             if (Current.Kind == kind)
                 return NextToken();
 
-            _diagnostics.ReportUnexpectedToken(Current.Span, Current.Kind, kind);
+
+            _diagnostics.Add($"ERROR: Unexpected token <{Current.Kind}> expected <{kind}>");
             return new SyntaxToken(kind, Current.Position, null, null);
         }
 
