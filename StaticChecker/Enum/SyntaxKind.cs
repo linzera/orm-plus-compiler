@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace orm_plus_compiler.StaticChecker.Enum
 {
-    internal enum SyntaxKind
+    public enum SyntaxKind
     {
         // Tokens
         NumberToken,

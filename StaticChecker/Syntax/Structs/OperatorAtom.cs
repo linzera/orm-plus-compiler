@@ -7,12 +7,11 @@ using System.Threading.Tasks;
 
 namespace orm_plus_compiler.StaticChecker.Syntax.Structs
 {
-   class OperatorAtom : Atom
+    class OperatorAtom : Atom
     {
         public override SyntaxKind Kind { get; }
         public override string CodeId { get; }
         public override string TextRepresentation { get; }
-        public OperatorKind OperatorType { get; }
 
         public OperatorAtom(SyntaxKind kind, string codeId, string textRepresentation)
         {
@@ -21,7 +20,7 @@ namespace orm_plus_compiler.StaticChecker.Syntax.Structs
             TextRepresentation = textRepresentation;
         }
 
-        public string Operator { get => TextRepresentation[0]; }
+        public char Operator { get => TextRepresentation[0]; }
     }
 }
 

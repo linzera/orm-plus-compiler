@@ -1,28 +1,24 @@
 ﻿using orm_plus_compiler.StaticChecker.Syntax.Utils;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace orm_plus_compiler.StaticChecker.Syntax.Structs
 {
-    sealed class SyntaxTree
+    sealed public class SyntaxTree
     {
         public ExpressionSyntax Root { get; }
         public SyntaxToken EndOfFileToken { get; }
-        public IReadOnlyList<string> Diagnostics { get; }
+        public IReadOnlyList<Diagnostic> Diagnostics { get; }
 
         public static SyntaxTree Parse(string text)
         {
             var parser = new Parser(text);
             return parser.Parse();
         }
-        public SyntaxTree(ExpressionSyntax root, SyntaxToken endOfFileToken, IEnumerable<string> diagnostics)
+        public SyntaxTree(ExpressionSyntax root, SyntaxToken endOfFileToken, IEnumerable<Diagnostic> diagnostics)
         {
             Root = root;
             EndOfFileToken = endOfFileToken;
-            Diagnostics = diagnostics.ToList();
+            Diagnostics = diagnostics.ToArray();
         }
     }
 }
