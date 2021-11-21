@@ -130,7 +130,7 @@ namespace orm_plus_compiler.StaticChecker.Syntax.Utils
                         return new LiteralExpressionSyntax(keywordToken, value);
                     }
                 default:
-                    var numberToken = MatchToken(SyntaxKind.NumberToken);
+                    var numberToken = MatchToken(SyntaxKind.IntegerToken);
                     return new LiteralExpressionSyntax(numberToken);
             }
         }

@@ -1,4 +1,5 @@
 ﻿using orm_plus_compiler.StaticChecker.Binding;
+using orm_plus_compiler.StaticChecker.Enum;
 using orm_plus_compiler.StaticChecker.Files;
 using orm_plus_compiler.StaticChecker.Syntax.Structs;
 using orm_plus_compiler.StaticChecker.Syntax.Utils;
@@ -12,17 +13,54 @@ namespace orm_plus_compiler
     {
         static void Main(string[] args)
         {
-            var showTree = false;
+            //var showTree = false;
 
             //Code code = FileManager.FileReader();
 
             while (true)
             {
-                Console.Write("> ");
+                Code code = FileManager.FileReader();
+              /*  Console.Write("> ");
 
-                var line = Console.ReadLine();
+                var line = Console.ReadLine();*/
 
-                if (string.IsNullOrWhiteSpace(line))
+                List<SymbolTableRow> symbolDatasList = new List<SymbolTableRow>();
+
+                foreach(CodeLine line in code.CodeLines)
+                {
+                    SymbolTableRow symbloData = new SymbolTableRow();
+                    symbloData.Index = symbolDatasList.Count() + 1;
+                    Lexer lexer = new Lexer(line.Line);
+
+                    SyntaxToken token;
+
+                    do
+                    {
+                       token = lexer.Lex();
+
+                        if (token.Kind != SyntaxKind.WhiteSpaceToken && token.Kind != SyntaxKind.BadExpressionToken && (token.Kind == SyntaxKind.IntegerToken 
+                            || token.Kind == SyntaxKind.DoubleToken || token.Kind == SyntaxKind.NotReservedKeyword))
+                        {
+                            if(!symbolDatasList.Any(s => s.SyntaxToken.Text == token.Text))
+                            {
+                                symbloData.IndexLineList.Add(line.LineId);
+                                symbloData.SyntaxToken = token;
+                                symbolDatasList.Add(symbloData);
+                            }
+                            else
+                            {
+                                SymbolTableRow symbloRow = symbolDatasList.FirstOrDefault(s => s.SyntaxToken.Text == token.Text);
+                                int lineIndex = symbolDatasList.IndexOf(symbloRow);
+                                symbolDatasList[lineIndex].IndexLineList.Add(line.LineId);
+                            }
+                        }
+
+                    } while (token.Kind != SyntaxKind.EndOfFileToken);
+
+                }
+
+
+             /*   if (string.IsNullOrWhiteSpace(line))
                 {
                     return;
                 }
@@ -37,9 +75,11 @@ namespace orm_plus_compiler
                 {
                     Console.Clear();
                     continue;
-                }
+                } */
 
-                var syntaxTree = SyntaxTree.Parse(line);
+
+
+              /*  var syntaxTree = SyntaxTree.Parse(line);
                 var binder = new Binder();
                 var boundExpression = binder.BindExpression(syntaxTree.Root);
 
@@ -60,7 +100,7 @@ namespace orm_plus_compiler
                     var e = new Evaluator(boundExpression);
                     var result = e.Evaluate();
                     Console.WriteLine(result);
-                }
+                }*/
             }
         }
 

@@ -60,7 +60,10 @@ namespace orm_plus_compiler.StaticChecker.Syntax.Structs
                 {
                     _diagnostics.Add($"The number {_text} can not be represented as an Int32");
                 }
-                return new SyntaxToken(SyntaxKind.NumberToken, start, text, value);
+
+                var numberKind = value % 1 == 0 ? SyntaxKind.IntegerToken : SyntaxKind.DoubleToken;
+
+                return new SyntaxToken(numberKind, start, text, value);
             }
 
             if (char.IsWhiteSpace(Current))
@@ -75,11 +78,11 @@ namespace orm_plus_compiler.StaticChecker.Syntax.Structs
                 return new SyntaxToken(SyntaxKind.WhiteSpaceToken, start, text, null);
             }
 
-            if (char.IsLetter(Current))
+            if (char.IsLetter(Current) )
             {
                 var start = _position;
 
-                while (char.IsLetter(Current))
+                while (char.IsLetter(Current) || Current.Equals('-'))
                     Next();
 
                 var length = _position - start;

@@ -102,7 +102,7 @@ namespace orm_plus_compiler.StaticChecker.Syntax.Utils
                 case "tipo-var":
                     return SyntaxKind.VarTypeKeyword;
                 default:
-                    return SyntaxKind.IdentifierToken;
+                    return SyntaxKind.NotReservedKeyword;
             }
         }
     }

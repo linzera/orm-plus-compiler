@@ -37,8 +37,8 @@ namespace orm_plus_compiler.StaticChecker.Files
                                 string filteredLine = lineFilter(line.Split(' '));
                                 CodeLine codeLine = new CodeLine(index, filteredLine);
                                 codeLineList.Add(codeLine);
-                                index++;
                             }
+                                index++;
                         }
 
                         Code code = new Code(Path.GetFileNameWithoutExtension(path), Path.GetExtension(path), codeLineList);

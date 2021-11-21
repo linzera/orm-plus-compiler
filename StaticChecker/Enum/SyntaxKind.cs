@@ -9,7 +9,8 @@ namespace orm_plus_compiler.StaticChecker.Enum
     internal enum SyntaxKind
     {
         // Tokens
-        NumberToken,
+        IntegerToken,
+        DoubleToken,
         OpenParenthesisToken,
         CloseParenthesisToken,
         EqualsEqualsToken,
@@ -51,6 +52,7 @@ namespace orm_plus_compiler.StaticChecker.Enum
         InitialFunctionKeyword,
         FinalFunctionKeyword,
         VarTypeKeyword,
+        NotReservedKeyword
 
     }
 }
