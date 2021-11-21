@@ -22,7 +22,6 @@ namespace orm_plus_compiler.StaticChecker.Enum
         BadExpressionToken,
         EndOfFileToken,
         IdentifierToken,
-        TwoPointsEqualsToken,
         SmallerOrEqualsThan,
         BiggerOrEqualsThan,
         SmallerThan,
@@ -42,8 +41,6 @@ namespace orm_plus_compiler.StaticChecker.Enum
         UnaryExpression,
         LiteralExpression,
         BracketsizedExpression,
-        NameExpression,
-        AssignmentExpression,
 
         // Palavras reservadas
         TrueKeyword,
@@ -55,6 +52,5 @@ namespace orm_plus_compiler.StaticChecker.Enum
         InitialFunctionKeyword,
         FinalFunctionKeyword,
         VarTypeKeyword,
-
     }
 }

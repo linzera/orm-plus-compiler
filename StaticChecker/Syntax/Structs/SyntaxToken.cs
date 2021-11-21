@@ -20,12 +20,6 @@ namespace orm_plus_compiler.StaticChecker.Syntax.Structs
         {
             return Enumerable.Empty<SyntaxNode>();
         }
-
-        public override string ToString()
-        {
-            return $"{Text}: <{Kind}>";
-        }
-
         public SyntaxToken(SyntaxKind kind, int position, string text, object value)
         {
             Kind = kind;
@@ -33,7 +27,5 @@ namespace orm_plus_compiler.StaticChecker.Syntax.Structs
             Text = text;
             Value = value;
         }
-
-
     }
 }
