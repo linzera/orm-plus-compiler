@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using orm_plus_compiler.StaticChecker.Binding.Abstraction;
 using orm_plus_compiler.StaticChecker.Binding.Expression;
 using orm_plus_compiler.StaticChecker.Enum;
@@ -13,10 +14,12 @@ namespace orm_plus_compiler.StaticChecker.Syntax.Utils
     sealed class Evaluator
     {
         private BoundExpression _root;
+        private Dictionary<VariableSymbol, object> _variables;
 
-        public Evaluator(BoundExpression root)
+        public Evaluator(BoundExpression root, Dictionary<VariableSymbol, object> variables)
         {
             this._root = root;
+            this._variables = variables;
         }
 
         public object Evaluate()
@@ -30,6 +33,18 @@ namespace orm_plus_compiler.StaticChecker.Syntax.Utils
             if (node is BoundLiteralExpression n)
             {
                 return n.Value;
+            }
+
+            if (node is BoundVariableExpression v)
+            {
+                return _variables[v.Variable];
+            }
+
+            if (node is BoundAssignmentExpression a)
+            {
+                var value = EvaluateExpression(a.Expression);
+                _variables[a.Variable] = value;
+                return value;
             }
 
             if (node is BoundUnaryExpression u)
