@@ -1,11 +1,8 @@
-﻿using orm_plus_compiler.StaticChecker.Binding;
-using orm_plus_compiler.StaticChecker.Enum;
-using orm_plus_compiler.StaticChecker.Files;
+﻿using orm_plus_compiler.StaticChecker.Files;
 using orm_plus_compiler.StaticChecker.Syntax.Structs;
 using orm_plus_compiler.StaticChecker.Syntax.Utils;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 
 namespace orm_plus_compiler
