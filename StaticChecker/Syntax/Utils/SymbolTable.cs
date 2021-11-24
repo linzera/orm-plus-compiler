@@ -17,8 +17,7 @@ namespace orm_plus_compiler.StaticChecker.Syntax.Utils
 
             foreach (CodeLine line in codeLines)
             {
-                SymbolTableRow symbloData = new SymbolTableRow();
-                symbloData.Index = symbolDatasList.Count() + 1;
+
                 Lexer lexer = new Lexer(line.Line);
 
                 SyntaxToken token;
@@ -32,6 +31,8 @@ namespace orm_plus_compiler.StaticChecker.Syntax.Utils
                     {
                         if (!symbolDatasList.Any(s => s.SyntaxToken.Text == token.Text))
                         {
+                            SymbolTableRow symbloData = new SymbolTableRow();
+                            symbloData.Index = symbolDatasList.Count() + 1;
                             symbloData.IndexLineList.Add(line.LineId);
                             symbloData.SyntaxToken = token;
                             symbolDatasList.Add(symbloData);

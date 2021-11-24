@@ -45,7 +45,7 @@ namespace orm_plus_compiler.StaticChecker.Syntax.Structs
         {
 
             if (_position >= _text.Length)
-                return new SyntaxToken(SyntaxKind.EndOfFileToken, _position, "\0", null);
+                return new SyntaxToken(SyntaxKind.EndOfFileToken, _position, "\0", null, null);
 
             if (char.IsDigit(Current))
             {
@@ -63,7 +63,9 @@ namespace orm_plus_compiler.StaticChecker.Syntax.Structs
 
                 var numberKind = value % 1 == 0 ? SyntaxKind.IntegerToken : SyntaxKind.DoubleToken;
 
-                return new SyntaxToken(numberKind, start, text, value);
+                var atomCodeId = OrmLanguageFacts.GetAtomCodeId(numberKind);
+
+                return new SyntaxToken(numberKind, start, text, value, atomCodeId);
             }
 
             if (char.IsWhiteSpace(Current))
@@ -75,10 +77,10 @@ namespace orm_plus_compiler.StaticChecker.Syntax.Structs
 
                 var length = _position - start;
                 var text = _text.Substring(start, length);
-                return new SyntaxToken(SyntaxKind.WhiteSpaceToken, start, text, null);
+                return new SyntaxToken(SyntaxKind.WhiteSpaceToken, start, text, null, null);
             }
 
-            if (char.IsLetter(Current) )
+            if (char.IsLetter(Current))
             {
                 var start = _position;
 
@@ -88,28 +90,30 @@ namespace orm_plus_compiler.StaticChecker.Syntax.Structs
                 var length = _position - start;
                 var text = _text.Substring(start, length);
                 var kind = OrmLanguageFacts.GetKeywordKind(text);
+                var atomCodeId = OrmLanguageFacts.GetAtomCodeId(kind);
 
-                if(length >= 30){
-                    return new TruncatedSyntaxToken(kind, start, text, text.Substring(0,30), null);
+                if (length >= 30)
+                {
+                    return new TruncatedSyntaxToken(kind, start, text, text.Substring(0, 30), null, atomCodeId);
                 }
 
-                return new SyntaxToken(kind, start, text, null);
+                return new SyntaxToken(kind, start, text, null, atomCodeId);
             }
 
             if (OrmLanguageFacts.singleOperatorMapping.ContainsKey(Current))
             {
                 var atom = OrmLanguageFacts.singleOperatorMapping[Current];
-                return new SyntaxToken(atom.Kind, _position++, atom.TextRepresentation, null);
+                return new SyntaxToken(atom.Kind, _position++, atom.TextRepresentation, null, atom.CodeId);
             }
 
             if (OrmLanguageFacts.isCurrentAndLookaheadDoubleOperator(Current, Lookahead))
             {
                 var atom = OrmLanguageFacts.doubleOperatorMapping[OrmLanguageFacts.buildStringFromCurrentAndLookahead(Current, Lookahead)];
-                return new SyntaxToken(atom.Kind, _position += 2, atom.TextRepresentation, null);
+                return new SyntaxToken(atom.Kind, _position += 2, atom.TextRepresentation, null, atom.CodeId);
             }
 
             _diagnostics.Add($"ERROR: bad character input: '{Current}'");
-            return new SyntaxToken(SyntaxKind.BadExpressionToken, _position++, _text.Substring(_position - 1, 1), null);
+            return new SyntaxToken(SyntaxKind.BadExpressionToken, _position++, _text.Substring(_position - 1, 1), null, null);
         }
 
     }

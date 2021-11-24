@@ -44,38 +44,21 @@ namespace orm_plus_compiler.StaticChecker.Syntax.Utils
             return doubleOperatorMapping.ContainsKey(operatorText);
         }
 
-
-        public static int GetUnaryOperatorPrecedence(SyntaxKind kind)
+        public static string GetAtomCodeId(SyntaxKind kind)
         {
             switch (kind)
             {
-                case SyntaxKind.PlusToken:
-                case SyntaxKind.MinusToken:
-                    return 4;
-
+                case SyntaxKind.IntegerToken:
+                    return "I04";
+                case SyntaxKind.DoubleToken:
+                    return "I05";
+                case SyntaxKind.NotReservedKeyword:
+                    return "I02";
                 default:
-                    return 0;
+                    return "00";
             }
         }
 
-        public static int GetBinaryOperatorPrecedence(SyntaxKind kind)
-        {
-            switch (kind)
-            {
-                case SyntaxKind.StarToken:
-                case SyntaxKind.SlashToken:
-                    return 3;
-                case SyntaxKind.PlusToken:
-                case SyntaxKind.MinusToken:
-                    return 2;
-
-                case SyntaxKind.EqualsEqualsToken:
-                case SyntaxKind.BangEquals:
-                    return 1;
-                default:
-                    return 0;
-            }
-        }
 
         public static SyntaxKind GetKeywordKind(string text)
         {
@@ -101,6 +84,18 @@ namespace orm_plus_compiler.StaticChecker.Syntax.Utils
                     return SyntaxKind.FinalFunctionKeyword;
                 case "tipo-var":
                     return SyntaxKind.VarTypeKeyword;
+                case "vazio":
+                    return SyntaxKind.VoidTypeKeyword;
+                case "real":
+                    return SyntaxKind.FloatTypeKeyword;
+                case "inteiro":
+                    return SyntaxKind.IntegerTypeKeyword;
+                case "tipo-func":
+                    return SyntaxKind.FunctionTypeKeyword;
+                case "tipo-param":
+                    return SyntaxKind.ParameterTypeKeyword;
+                case "retorna":
+                    return SyntaxKind.ReturnKeyword;
                 default:
                     return SyntaxKind.NotReservedKeyword;
             }

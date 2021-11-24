@@ -52,7 +52,12 @@ namespace orm_plus_compiler.StaticChecker.Enum
         InitialFunctionKeyword,
         FinalFunctionKeyword,
         VarTypeKeyword,
-        NotReservedKeyword
-
+        NotReservedKeyword,
+        VoidTypeKeyword,
+        FloatTypeKeyword,
+        IntegerTypeKeyword,
+        FunctionTypeKeyword,
+        ParameterTypeKeyword,
+        ReturnKeyword
     }
 }

@@ -39,7 +39,7 @@ namespace orm_plus_compiler.StaticChecker.Files
                                 CodeLine codeLine = new CodeLine(index, filteredLine);
                                 codeLineList.Add(codeLine);
                             }
-                                index++;
+                            index++;
                         }
 
                         Code code = new Code(Path.GetFileNameWithoutExtension(path), Path.GetExtension(path), codeLineList);
@@ -68,10 +68,10 @@ namespace orm_plus_compiler.StaticChecker.Files
         {
 
             List<string> tableRows = new List<string>();
-            string index = string.Empty, 
-                code = string.Empty, 
-                lex = string.Empty, 
-                tokenType = string.Empty, 
+            string index = string.Empty,
+                code = string.Empty,
+                lex = string.Empty,
+                tokenType = string.Empty,
                 lines = string.Empty,
                 qtdA = string.Empty,
                 qtdD = string.Empty;
@@ -87,7 +87,7 @@ namespace orm_plus_compiler.StaticChecker.Files
                 else
                     index = " " + row.Index + "   |";
 
-                code = "  S00  |";
+                code = $"  {row.SyntaxToken.SyntaxAtomCodeId}  |";
 
 
                 if (row.SyntaxToken.GetType() == typeof(TruncatedSyntaxToken))
@@ -111,9 +111,9 @@ namespace orm_plus_compiler.StaticChecker.Files
 
                 if (row.SyntaxToken.Kind == Enum.SyntaxKind.IntegerToken)
                     tokenType = "  INT   |";
-                else if(row.SyntaxToken.Kind == Enum.SyntaxKind.DoubleToken)
+                else if (row.SyntaxToken.Kind == Enum.SyntaxKind.DoubleToken)
                     tokenType = "  REAL  |";
-                else if(row.SyntaxToken.Kind == Enum.SyntaxKind.NotReservedKeyword)
+                else if (row.SyntaxToken.Kind == Enum.SyntaxKind.NotReservedKeyword)
                     tokenType = "  VOID  |";
 
                 lines = "  " + string.Join(", ", row.IndexLineList);
@@ -130,11 +130,11 @@ namespace orm_plus_compiler.StaticChecker.Files
         public static void FileWriter(List<SymbolTableRow> symbolTableRow)
         {
             // If directory does not exist, create it.  
-            if (File.Exists(@"D:\Pessoal\Faculdade\Compiladores\Test.LEX"))
-                File.Delete(@"D:\Pessoal\Faculdade\Compiladores\Test.LEX");
+            if (File.Exists(@"C:\Users\Lin\work\orm-plus-compiler\Test.TAB"))
+                File.Delete(@"C:\Users\Lin\work\orm-plus-compiler\Test.TAB");
 
             Console.WriteLine("Creating the file.LEX...");
-            StreamWriter symbolTableFile = new StreamWriter(@"D:\Pessoal\Faculdade\Compiladores\Test.LEX", true);
+            StreamWriter symbolTableFile = new StreamWriter(@"C:\Users\Lin\work\orm-plus-compiler\Test.TAB", true);
             Console.WriteLine("File Create!");
             Console.WriteLine("Writing...\n \n");
             symbolTableFile.WriteLine("Tabela de simbolos\n");
@@ -151,7 +151,7 @@ namespace orm_plus_compiler.StaticChecker.Files
         {
             List<string> filteredLine = new List<string>();
 
-            foreach(string l in line)
+            foreach (string l in line)
             {
                 if (!string.IsNullOrWhiteSpace(l) || !string.IsNullOrEmpty(l))
                     filteredLine.Add(l);

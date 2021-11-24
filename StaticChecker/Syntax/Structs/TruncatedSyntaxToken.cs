@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 namespace orm_plus_compiler.StaticChecker.Syntax.Structs
 {
     class TruncatedSyntaxToken : SyntaxToken
-    {   
-        
+    {
+
         public string TruncatedText { get; }
 
-        public TruncatedSyntaxToken(SyntaxKind kind, int position, string text, string truncatedText, object value) : base(kind, position, text, value)
+        public TruncatedSyntaxToken(SyntaxKind kind, int position, string text, string truncatedText, object value, string atomCodeId) : base(kind, position, text, value, atomCodeId)
         {
             TruncatedText = truncatedText;
         }

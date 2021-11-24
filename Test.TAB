@@ -1,0 +1,10 @@
+Tabela de simbolos
+
+  Index  |  Cod  |              Lexeme            |  QtdA  |  QtdD  |  Tipo  |  Linhas
+   001   |  I02  |a                               |   1    |   1    |  VOID  |  1
+   002   |  I02  |d                               |   1    |   1    |  VOID  |  1
+   003   |  I02  |Calculadora                     |   11    |   11    |  VOID  |  2
+   004   |  I02  |x                               |   1    |   1    |  VOID  |  2
+   005   |  I02  |soma                            |   4    |   4    |  VOID  |  4
+   006   |  I02  |y                               |   1    |   1    |  VOID  |  4, 5
+   007   |  I02  |z                               |   1    |   1    |  VOID  |  4, 5

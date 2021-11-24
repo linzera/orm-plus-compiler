@@ -13,16 +13,19 @@ namespace orm_plus_compiler.StaticChecker.Syntax.Structs
         public int Position { get; }
         public string Text { get; }
         public object Value { get; }
+
+        public string SyntaxAtomCodeId { get; }
         public override IEnumerable<SyntaxNode> GetChildren()
         {
             return Enumerable.Empty<SyntaxNode>();
         }
-        public SyntaxToken(SyntaxKind kind, int position, string text, object value)
+        public SyntaxToken(SyntaxKind kind, int position, string text, object value, string atomCodeId)
         {
             Kind = kind;
             Position = position;
             Text = text;
             Value = value;
+            SyntaxAtomCodeId = atomCodeId;
         }
     }
 }
