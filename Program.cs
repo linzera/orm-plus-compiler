@@ -18,7 +18,7 @@ namespace orm_plus_compiler
 
                 SymbolTable.RowFormation(code.CodeLines);
 
-                FileManager.FileWriter(SymbolTable.symbolDataList, SymbolTable.lexDataList);
+                FileManager.FileWriter(SymbolTable.symbolDataList, SymbolTable.lexDataList, code.FilePath);
             }
         }
     }

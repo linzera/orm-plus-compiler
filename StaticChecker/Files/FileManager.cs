@@ -42,7 +42,7 @@ namespace orm_plus_compiler.StaticChecker.Files
                             index++;
                         }
 
-                        Code code = new Code(Path.GetFileNameWithoutExtension(path), Path.GetExtension(path), codeLineList);
+                        Code code = new Code(Path.GetFileNameWithoutExtension(path), Path.GetExtension(path), codeLineList, Path.GetFullPath(path));
 
                         return code;
                     }
@@ -94,8 +94,23 @@ namespace orm_plus_compiler.StaticChecker.Files
                 {
                     TruncatedSyntaxToken truncatedText = row.SyntaxToken as TruncatedSyntaxToken;
                     lex = truncatedText.TruncatedText + "  |";
-                    qtdA = "   " + truncatedText.Text.Length + "    |";
-                    qtdD = "   " + truncatedText.TruncatedText.Length + "    |";
+
+                    if (truncatedText.TruncatedText.Length < 10)
+                    {
+                        qtdA = "   " + truncatedText.Text.Length + "    |";
+                        qtdD = "   " + truncatedText.TruncatedText.Length + "    |";
+                    }
+                    else if (truncatedText.TruncatedText.Length < 100)
+                    {
+                        qtdA = "   " + truncatedText.Text.Length + "   |";
+                        qtdD = "   " + truncatedText.TruncatedText.Length + "   |";
+                    }
+                    else
+                    {
+                        qtdA = "   " + truncatedText.Text.Length + "  |";
+                        qtdD = "   " + truncatedText.TruncatedText.Length + "  |";
+                    }
+
                 }
                 else
                 {
@@ -131,43 +146,37 @@ namespace orm_plus_compiler.StaticChecker.Files
         {
 
             List<string> tableRows = new List<string>();
-            string symbolTableIndex = "---";
-
+            string symbolTableIndex = " ---";
 
             foreach (LexRow row in lexTableRow)
             {
 
                 if (row.SymbolTableIndex != null)
-                {
-                    symbolTableIndex = row.SymbolTableIndex.ToString();
-                }
-                else
-                {
-                    symbolTableIndex = "---";
-                }
+                    symbolTableIndex = " " + row.SymbolTableIndex.ToString(); 
 
-
-                tableRows.Add(row.Text + " |" + row.AtomCodeId + " |" + symbolTableIndex);
+                tableRows.Add(row.Text  + "   " + row.AtomCodeId + "   " + "|" + symbolTableIndex);
             }
-
 
             return tableRows;
 
         }
 
-        public static void FileWriter(List<SymbolTableRow> symbolTableRow, List<LexRow> lexTableRow)
+        public static void FileWriter(List<SymbolTableRow> symbolTableRow, List<LexRow> lexTableRow, string path)
         {
-            // If directory does not exist, create it.  
-            if (File.Exists(@"C:\Users\Lin\work\orm-plus-compiler\Test.TAB"))
-                File.Delete(@"C:\Users\Lin\work\orm-plus-compiler\Test.TAB");
+            string symbolTablePath = path.Replace(".202", ".TAB");
+            string lexTablePath = path.Replace(".202", ".LEX");
 
-            if (File.Exists(@"C:\Users\Lin\work\orm-plus-compiler\Test.LEX"))
-                File.Delete(@"C:\Users\Lin\work\orm-plus-compiler\Test.LEX");
+            // If directory does not exist, create it.  
+            if (File.Exists(symbolTablePath))
+                File.Delete(symbolTablePath);
+
+            if (File.Exists(lexTablePath))
+                File.Delete(lexTablePath);
 
             Console.WriteLine("Creating the file.TAB...");
-            StreamWriter symbolTableFile = new StreamWriter(@"C:\Users\Lin\work\orm-plus-compiler\Test.TAB", true);
+            StreamWriter symbolTableFile = new StreamWriter(symbolTablePath, true);
             Console.WriteLine("File Create!");
-            Console.WriteLine("Writing...\n \n");
+            Console.WriteLine("Writing...\n");
 
             symbolTableFile.WriteLine("Tabela de simbolos\n");
             symbolTableFile.WriteLine("  Index  |  Cod  |              Lexeme            |  QtdA  |  QtdD  |  Tipo  |  Linhas");
@@ -178,20 +187,25 @@ namespace orm_plus_compiler.StaticChecker.Files
 
             symbolTableFile.Close();
 
+            Console.WriteLine("Done!\n");
 
             Console.WriteLine("Creating the file.LEX...");
-            StreamWriter lexTableFile = new StreamWriter(@"C:\Users\Lin\work\orm-plus-compiler\Test.LEX", true);
+            StreamWriter lexTableFile = new StreamWriter(lexTablePath, true);
             Console.WriteLine("File Create!");
-            Console.WriteLine("Writing...\n \n");
+            Console.WriteLine("Writing...\n");
 
-            lexTableFile.WriteLine("Tabela Lex\n");
-            lexTableFile.WriteLine("Lexeme  |  Átomo  | Índice na Tabela de Símbolos");
+            lexTableFile.WriteLine("Relatório da análise léxica\n");
+            lexTableFile.WriteLine("Lexeme                          |  Átomo  | Índice na Tabela de Símbolos");
             List<string> stringLexTableRow = FormateLexTableReport(lexTableRow);
 
             foreach (string s in stringLexTableRow)
                 lexTableFile.WriteLine(s);
 
             lexTableFile.Close();
+
+            Console.WriteLine("Done!\n");
+
+            Console.WriteLine(">> The reports were creat on the same directory entered previously <<\n");
         }
 
         private static string lineFilter(string[] line)

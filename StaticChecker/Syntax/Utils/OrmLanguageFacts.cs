@@ -56,7 +56,7 @@ namespace orm_plus_compiler.StaticChecker.Syntax.Utils
                 case SyntaxKind.NotReservedKeyword:
                     return "I02";
                 default:
-                    return "00";
+                    return "X00";
             }
         }
 

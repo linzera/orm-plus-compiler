@@ -119,11 +119,34 @@ namespace orm_plus_compiler.StaticChecker.Syntax.Utils
                     if (token.Kind != SyntaxKind.WhiteSpaceToken && token.Kind != SyntaxKind.BadExpressionToken && token.Kind != SyntaxKind.EndOfFileToken)
                     {
 
-                        var symbolRow = symbolDataList.Find(symbol => symbol.SyntaxToken.Text == token.Text);
+                        SymbolTableRow symbolRow = symbolDataList.Find(symbol => symbol.SyntaxToken.Text == token.Text);
+                        string lex = string.Empty;
+                        int? symbolIndex;
+                        if (symbolRow != null)
+                        {
+                            if (symbolRow.SyntaxToken.GetType() == typeof(TruncatedSyntaxToken))
+                            {
+                                TruncatedSyntaxToken truncatedText = symbolRow.SyntaxToken as TruncatedSyntaxToken;
+                                lex = truncatedText.TruncatedText;
+                            }
+                            else
+                            {
+                                lex = symbolRow.SyntaxToken.Text;
+                            }
+                            symbolIndex = symbolRow.Index;
 
-                        int? symbolIndex = symbolRow != null ? symbolRow.Index : null;
+                        }
+                        else
+                        {
+                            lex = token.Text;
+                            symbolIndex = null;
+                        }
 
-                        var lexRow = new LexRow(token.Text, token.SyntaxAtomCodeId, symbolIndex);
+                        while (lex.Length <= 30)
+                            lex = lex + " ";
+                        lex = lex + " |";
+
+                        LexRow lexRow = new LexRow(lex, token.SyntaxAtomCodeId, symbolIndex);
 
                         lexDataList.Add(lexRow);
                     }
