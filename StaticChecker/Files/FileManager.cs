@@ -127,16 +127,48 @@ namespace orm_plus_compiler.StaticChecker.Files
 
         }
 
-        public static void FileWriter(List<SymbolTableRow> symbolTableRow)
+        private static List<string> FormateLexTableReport(List<LexRow> lexTableRow)
+        {
+
+            List<string> tableRows = new List<string>();
+            string symbolTableIndex = "---";
+
+
+            foreach (LexRow row in lexTableRow)
+            {
+
+                if (row.SymbolTableIndex != null)
+                {
+                    symbolTableIndex = row.SymbolTableIndex.ToString();
+                }
+                else
+                {
+                    symbolTableIndex = "---";
+                }
+
+
+                tableRows.Add(row.Text + " |" + row.AtomCodeId + " |" + symbolTableIndex);
+            }
+
+
+            return tableRows;
+
+        }
+
+        public static void FileWriter(List<SymbolTableRow> symbolTableRow, List<LexRow> lexTableRow)
         {
             // If directory does not exist, create it.  
             if (File.Exists(@"C:\Users\Lin\work\orm-plus-compiler\Test.TAB"))
                 File.Delete(@"C:\Users\Lin\work\orm-plus-compiler\Test.TAB");
 
-            Console.WriteLine("Creating the file.LEX...");
+            if (File.Exists(@"C:\Users\Lin\work\orm-plus-compiler\Test.LEX"))
+                File.Delete(@"C:\Users\Lin\work\orm-plus-compiler\Test.LEX");
+
+            Console.WriteLine("Creating the file.TAB...");
             StreamWriter symbolTableFile = new StreamWriter(@"C:\Users\Lin\work\orm-plus-compiler\Test.TAB", true);
             Console.WriteLine("File Create!");
             Console.WriteLine("Writing...\n \n");
+
             symbolTableFile.WriteLine("Tabela de simbolos\n");
             symbolTableFile.WriteLine("  Index  |  Cod  |              Lexeme            |  QtdA  |  QtdD  |  Tipo  |  Linhas");
             List<string> stringSymbolTableRow = FormateSymbolTableReport(symbolTableRow);
@@ -145,6 +177,21 @@ namespace orm_plus_compiler.StaticChecker.Files
                 symbolTableFile.WriteLine(s);
 
             symbolTableFile.Close();
+
+
+            Console.WriteLine("Creating the file.LEX...");
+            StreamWriter lexTableFile = new StreamWriter(@"C:\Users\Lin\work\orm-plus-compiler\Test.LEX", true);
+            Console.WriteLine("File Create!");
+            Console.WriteLine("Writing...\n \n");
+
+            lexTableFile.WriteLine("Tabela Lex\n");
+            lexTableFile.WriteLine("Lexeme  |  Átomo  | Índice na Tabela de Símbolos");
+            List<string> stringLexTableRow = FormateLexTableReport(lexTableRow);
+
+            foreach (string s in stringLexTableRow)
+                lexTableFile.WriteLine(s);
+
+            lexTableFile.Close();
         }
 
         private static string lineFilter(string[] line)

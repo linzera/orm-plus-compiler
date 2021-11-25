@@ -14,7 +14,7 @@ namespace orm_plus_compiler.StaticChecker.Syntax.Structs
         public string Text { get; }
         public object Value { get; }
 
-        public string SyntaxAtomCodeId { get; }
+        public string SyntaxAtomCodeId { get; set; }
         public override IEnumerable<SyntaxNode> GetChildren()
         {
             return Enumerable.Empty<SyntaxNode>();

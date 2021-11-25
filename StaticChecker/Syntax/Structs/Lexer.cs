@@ -28,7 +28,7 @@ namespace orm_plus_compiler.StaticChecker.Syntax.Structs
         {
             var index = _position + offset;
 
-            if (_position >= _text.Length)
+            if (index >= _text.Length)
             {
                 return '\0';
             }
@@ -100,16 +100,16 @@ namespace orm_plus_compiler.StaticChecker.Syntax.Structs
                 return new SyntaxToken(kind, start, text, null, atomCodeId);
             }
 
-            if (OrmLanguageFacts.singleOperatorMapping.ContainsKey(Current))
-            {
-                var atom = OrmLanguageFacts.singleOperatorMapping[Current];
-                return new SyntaxToken(atom.Kind, _position++, atom.TextRepresentation, null, atom.CodeId);
-            }
-
             if (OrmLanguageFacts.isCurrentAndLookaheadDoubleOperator(Current, Lookahead))
             {
                 var atom = OrmLanguageFacts.doubleOperatorMapping[OrmLanguageFacts.buildStringFromCurrentAndLookahead(Current, Lookahead)];
                 return new SyntaxToken(atom.Kind, _position += 2, atom.TextRepresentation, null, atom.CodeId);
+            }
+
+            if (OrmLanguageFacts.singleOperatorMapping.ContainsKey(Current))
+            {
+                var atom = OrmLanguageFacts.singleOperatorMapping[Current];
+                return new SyntaxToken(atom.Kind, _position++, atom.TextRepresentation, null, atom.CodeId);
             }
 
             _diagnostics.Add($"ERROR: bad character input: '{Current}'");

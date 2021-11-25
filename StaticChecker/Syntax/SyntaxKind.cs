@@ -58,6 +58,7 @@ namespace orm_plus_compiler.StaticChecker.Enum
         IntegerTypeKeyword,
         FunctionTypeKeyword,
         ParameterTypeKeyword,
-        ReturnKeyword
+        ReturnKeyword,
+        TwoPointsEquals
     }
 }

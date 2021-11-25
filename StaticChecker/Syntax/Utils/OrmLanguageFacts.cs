@@ -32,6 +32,7 @@ namespace orm_plus_compiler.StaticChecker.Syntax.Utils
             {"!=", new DoubleOperatorAtom(SyntaxKind.BangEquals, "S15", "!=")},
             {"<=", new DoubleOperatorAtom(SyntaxKind.SmallerOrEqualsThan, "S10", "<=")},
             {">=", new DoubleOperatorAtom(SyntaxKind.BiggerOrEqualsThan, "S13", ">=")},
+            {":=", new DoubleOperatorAtom(SyntaxKind.TwoPointsEquals, "S21", ":=")},
         };
 
         public static String buildStringFromCurrentAndLookahead(char current, char lookahead)
@@ -56,6 +57,17 @@ namespace orm_plus_compiler.StaticChecker.Syntax.Utils
                     return "I02";
                 default:
                     return "00";
+            }
+        }
+
+        public static string EvaluatePreviousTokenCodeId(SyntaxToken previousToken)
+        {
+            switch (previousToken.Kind)
+            {
+                case SyntaxKind.InitialProgramKeyword:
+                    return "I01";
+                default:
+                    return null;
             }
         }
 
