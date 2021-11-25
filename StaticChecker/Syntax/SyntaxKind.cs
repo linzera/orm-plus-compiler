@@ -35,12 +35,8 @@ namespace orm_plus_compiler.StaticChecker.Enum
         LeftBrace,
         RightBrace,
         QuestionMark,
-
-        // Expressoes
-        BinaryExpression,
-        ParenthesizedExpression,
-        UnaryExpression,
-        LiteralExpression,
+        ConstChar,
+        ConstString,
 
         // Palavras reservadas
         TrueKeyword,

@@ -51,12 +51,12 @@ namespace orm_plus_compiler.StaticChecker.Syntax.Structs
             {
                 var start = _position;
 
-                while (char.IsDigit(Current))
+                while (char.IsDigit(Current) || Current.Equals('.'))
                     Next();
 
                 var digitLength = _position - start;
                 var text = _text.Substring(start, digitLength);
-                if (!int.TryParse(text, out int value))
+                if (!double.TryParse(text, out double value))
                 {
                     _diagnostics.Add($"The number {_text} can not be represented as an Int32");
                 }
@@ -84,7 +84,7 @@ namespace orm_plus_compiler.StaticChecker.Syntax.Structs
             {
                 var start = _position;
 
-                while (char.IsLetter(Current) || Current.Equals('-'))
+                while (char.IsLetter(Current) || Current.Equals('-') || OrmLanguageFacts.ValidEspecialCharList.Contains(Current))
                     Next();
 
                 var length = _position - start;
@@ -96,6 +96,36 @@ namespace orm_plus_compiler.StaticChecker.Syntax.Structs
                 {
                     return new TruncatedSyntaxToken(kind, start, text, text.Substring(0, 30), null, atomCodeId);
                 }
+
+                return new SyntaxToken(kind, start, text, null, atomCodeId);
+            }
+
+            if (Current.Equals('\''))
+            {
+                var start = _position;
+
+                while (char.IsLetter(Current) || Current.Equals('\''))
+                    Next();
+
+                int length = _position - start;
+                string text = _text.Substring(start, length);
+                SyntaxKind kind = SyntaxKind.ConstChar;
+                string atomCodeId = OrmLanguageFacts.GetAtomCodeId(kind);
+
+                return new SyntaxToken(kind, start, text, null, atomCodeId);
+            }
+
+            if (Current.Equals('\"'))
+            {
+                var start = _position;
+
+                while (char.IsLetterOrDigit(Current) || Current.Equals('\"') || Current.Equals(' '))
+                    Next();
+
+                int length = _position - start;
+                string text = _text.Substring(start, length);
+                SyntaxKind kind = SyntaxKind.ConstString;
+                string atomCodeId = OrmLanguageFacts.GetAtomCodeId(kind);
 
                 return new SyntaxToken(kind, start, text, null, atomCodeId);
             }

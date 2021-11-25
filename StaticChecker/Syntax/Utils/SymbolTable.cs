@@ -72,7 +72,8 @@ namespace orm_plus_compiler.StaticChecker.Syntax.Utils
                 lineToken.Tokens.ForEach((token) =>
                 {
                     if (token.Kind != SyntaxKind.WhiteSpaceToken && token.Kind != SyntaxKind.BadExpressionToken && (token.Kind == SyntaxKind.IntegerToken
-                                   || token.Kind == SyntaxKind.DoubleToken || token.Kind == SyntaxKind.NotReservedKeyword))
+                                   || token.Kind == SyntaxKind.DoubleToken || token.Kind == SyntaxKind.NotReservedKeyword || token.Kind == SyntaxKind.ConstString ||
+                                   token.Kind == SyntaxKind.ConstChar))
                     {
                         if (!symbolDataList.Any(s => s.SyntaxToken.Text == token.Text))
                         {
@@ -80,9 +81,9 @@ namespace orm_plus_compiler.StaticChecker.Syntax.Utils
                             symbolData.Index = symbolDataList.Count() + 1;
                             symbolData.IndexLineList.Add(lineToken.LineData.LineId);
 
-                            var currentSyntaxToken = token;
+                            SyntaxToken currentSyntaxToken = token;
 
-                            var tokenIndex = lineToken.Tokens.IndexOf(token);
+                            int tokenIndex = lineToken.Tokens.IndexOf(token);
 
                             // Se token nao tem antecedente adicionamos direto a tabela de simbolos
                             if (tokenIndex == 0)
@@ -94,8 +95,8 @@ namespace orm_plus_compiler.StaticChecker.Syntax.Utils
 
                             // precisamos descobrir se o token tem um antecedente que diz sua caracteristica
                             // ex: nome-programa
-                            var previousToken = lineToken.Tokens[tokenIndex - 1];
-                            var previousContextAtomId = OrmLanguageFacts.EvaluatePreviousTokenCodeId(previousToken);
+                            SyntaxToken previousToken = lineToken.Tokens[tokenIndex - 1];
+                            string previousContextAtomId = OrmLanguageFacts.EvaluatePreviousTokenCodeId(previousToken);
 
                             if (previousContextAtomId != null)
                             {

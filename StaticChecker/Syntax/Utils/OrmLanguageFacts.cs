@@ -10,6 +10,7 @@ namespace orm_plus_compiler.StaticChecker.Syntax.Utils
 {
     class OrmLanguageFacts
     {
+
         public static Dictionary<Char, OperatorAtom> singleOperatorMapping = new Dictionary<Char, OperatorAtom>{
             {'(', new OperatorAtom(SyntaxKind.OpenParenthesisToken, "S06", "(")},
             {')', new OperatorAtom(SyntaxKind.CloseParenthesisToken, "S07", ")")},
@@ -35,6 +36,11 @@ namespace orm_plus_compiler.StaticChecker.Syntax.Utils
             {":=", new DoubleOperatorAtom(SyntaxKind.TwoPointsEquals, "S21", ":=")},
         };
 
+        public static List<char> ValidEspecialCharList = new List<char>()
+        {
+           '$', '_', '.'
+        };
+
         public static String buildStringFromCurrentAndLookahead(char current, char lookahead)
         {
             return string.Concat(current, lookahead);
@@ -55,6 +61,10 @@ namespace orm_plus_compiler.StaticChecker.Syntax.Utils
                     return "I05";
                 case SyntaxKind.NotReservedKeyword:
                     return "I02";
+                case SyntaxKind.ConstChar:
+                    return "I07";
+                case SyntaxKind.ConstString:
+                    return "I06";
                 default:
                     return "X00";
             }

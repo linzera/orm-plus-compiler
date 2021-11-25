@@ -35,9 +35,12 @@ namespace orm_plus_compiler.StaticChecker.Files
 
                             if (!string.IsNullOrWhiteSpace(line) || !string.IsNullOrEmpty(line))
                             {
-                                string filteredLine = lineFilter(line.Split(' '));
-                                CodeLine codeLine = new CodeLine(index, filteredLine);
-                                codeLineList.Add(codeLine);
+                                string filteredLine = lineFilter(line);
+                                if(!string.IsNullOrEmpty(filteredLine) || !string.IsNullOrWhiteSpace(filteredLine))
+                                {
+                                    CodeLine codeLine = new CodeLine(index, filteredLine);
+                                    codeLineList.Add(codeLine);
+                                }
                             }
                             index++;
                         }
@@ -64,102 +67,6 @@ namespace orm_plus_compiler.StaticChecker.Files
 
         }
 
-        private static List<string> FormateSymbolTableReport(List<SymbolTableRow> symbolTableRow)
-        {
-
-            List<string> tableRows = new List<string>();
-            string index = string.Empty,
-                code = string.Empty,
-                lex = string.Empty,
-                tokenType = string.Empty,
-                lines = string.Empty,
-                qtdA = string.Empty,
-                qtdD = string.Empty;
-
-
-            foreach (SymbolTableRow row in symbolTableRow)
-            {
-
-                if (row.Index < 10)
-                    index = "   00" + row.Index + "   |";
-                else if (row.Index < 100)
-                    index = " 0" + row.Index + "   |";
-                else
-                    index = " " + row.Index + "   |";
-
-                code = $"  {row.SyntaxToken.SyntaxAtomCodeId}  |";
-
-
-                if (row.SyntaxToken.GetType() == typeof(TruncatedSyntaxToken))
-                {
-                    TruncatedSyntaxToken truncatedText = row.SyntaxToken as TruncatedSyntaxToken;
-                    lex = truncatedText.TruncatedText + "  |";
-
-                    if (truncatedText.TruncatedText.Length < 10)
-                    {
-                        qtdA = "   " + truncatedText.Text.Length + "    |";
-                        qtdD = "   " + truncatedText.TruncatedText.Length + "    |";
-                    }
-                    else if (truncatedText.TruncatedText.Length < 100)
-                    {
-                        qtdA = "   " + truncatedText.Text.Length + "   |";
-                        qtdD = "   " + truncatedText.TruncatedText.Length + "   |";
-                    }
-                    else
-                    {
-                        qtdA = "   " + truncatedText.Text.Length + "  |";
-                        qtdD = "   " + truncatedText.TruncatedText.Length + "  |";
-                    }
-
-                }
-                else
-                {
-                    lex = row.SyntaxToken.Text;
-
-                    while (lex.Length <= 30)
-                        lex = lex + " ";
-                    lex = lex + " |";
-
-                    qtdA = "   " + row.SyntaxToken.Text.Length + "    |";
-                    qtdD = qtdA;
-                }
-
-                if (row.SyntaxToken.Kind == Enum.SyntaxKind.IntegerToken)
-                    tokenType = "  INT   |";
-                else if (row.SyntaxToken.Kind == Enum.SyntaxKind.DoubleToken)
-                    tokenType = "  REAL  |";
-                else if (row.SyntaxToken.Kind == Enum.SyntaxKind.NotReservedKeyword)
-                    tokenType = "  VOID  |";
-
-                lines = "  " + string.Join(", ", row.IndexLineList);
-
-
-                tableRows.Add(index + code + lex + qtdA + qtdD + tokenType + lines);
-            }
-
-
-            return tableRows;
-
-        }
-
-        private static List<string> FormateLexTableReport(List<LexRow> lexTableRow)
-        {
-
-            List<string> tableRows = new List<string>();
-            string symbolTableIndex = " ---";
-
-            foreach (LexRow row in lexTableRow)
-            {
-
-                if (row.SymbolTableIndex != null)
-                    symbolTableIndex = " " + row.SymbolTableIndex.ToString(); 
-
-                tableRows.Add(row.Text  + "   " + row.AtomCodeId + "   " + "|" + symbolTableIndex);
-            }
-
-            return tableRows;
-
-        }
 
         public static void FileWriter(List<SymbolTableRow> symbolTableRow, List<LexRow> lexTableRow, string path)
         {
@@ -208,17 +115,120 @@ namespace orm_plus_compiler.StaticChecker.Files
             Console.WriteLine(">> The reports were creat on the same directory entered previously <<\n");
         }
 
-        private static string lineFilter(string[] line)
+        private static string lineFilter(string line)
         {
-            List<string> filteredLine = new List<string>();
+            string filterWord = string.Empty;
 
-            foreach (string l in line)
+            foreach (char c in line)
             {
-                if (!string.IsNullOrWhiteSpace(l) || !string.IsNullOrEmpty(l))
-                    filteredLine.Add(l);
+                if (c.Equals(' ') || c.Equals('-') || OrmLanguageFacts.ValidEspecialCharList.Contains(c) || char.IsLetterOrDigit(c) || 
+                    OrmLanguageFacts.singleOperatorMapping.Any(a => a.Key.Equals(c)) || c.Equals('\"') || c.Equals('\''))
+                {
+                    filterWord += c;
+                }
             }
 
-            return string.Join(" ", filteredLine);
+            return filterWord;
+        }
+        private static List<string> FormateSymbolTableReport(List<SymbolTableRow> symbolTableRow)
+        {
+
+            List<string> tableRows = new List<string>();
+            string index = string.Empty,
+                code = string.Empty,
+                lex = string.Empty,
+                tokenType = string.Empty,
+                lines = string.Empty,
+                qtdA = string.Empty,
+                qtdD = string.Empty;
+
+
+            foreach (SymbolTableRow row in symbolTableRow)
+            {
+
+                if (row.Index < 10)
+                    index = "   00" + row.Index + "   |";
+                else if (row.Index < 100)
+                    index = "   0" + row.Index + "    |";
+                else
+                    index = " " + row.Index + "   |";
+
+                code = $"  {row.SyntaxToken.SyntaxAtomCodeId}  |";
+
+
+                if (row.SyntaxToken.GetType() == typeof(TruncatedSyntaxToken))
+                {
+                    TruncatedSyntaxToken truncatedText = row.SyntaxToken as TruncatedSyntaxToken;
+                    lex = truncatedText.TruncatedText + "  |";
+
+                    if (truncatedText.TruncatedText.Length < 10)
+                    {
+                        qtdA = "   " + truncatedText.Text.Length + "   |";
+                        qtdD = "   " + truncatedText.TruncatedText.Length + "   |";
+                    }
+                    else if (truncatedText.TruncatedText.Length < 100)
+                    {
+                        qtdA = "  " + truncatedText.Text.Length + "|";
+                        qtdD = "  " + truncatedText.TruncatedText.Length + "|";
+                    }
+                    else
+                    {
+                        qtdA = "   " + truncatedText.Text.Length + "  |";
+                        qtdD = "   " + truncatedText.TruncatedText.Length + "  |";
+                    }
+
+                }
+                else
+                {
+                    lex = row.SyntaxToken.Text;
+
+                    while (lex.Length <= 30)
+                        lex = lex + " ";
+                    lex = lex + " |";
+
+                    qtdA = "   " + row.SyntaxToken.Text.Length + "    |";
+                    qtdD = qtdA;
+                }
+
+                if (row.SyntaxToken.Kind == Enum.SyntaxKind.IntegerToken)
+                    tokenType = "  INT   |";
+                else if (row.SyntaxToken.Kind == Enum.SyntaxKind.DoubleToken)
+                    tokenType = "  REAL  |";
+                else if (row.SyntaxToken.Kind == Enum.SyntaxKind.ConstChar)
+                    tokenType = "  CHAR  |";
+                else if (row.SyntaxToken.Kind == Enum.SyntaxKind.ConstString)
+                    tokenType = " STRING |";
+                else if (row.SyntaxToken.Kind == Enum.SyntaxKind.NotReservedKeyword)
+                    tokenType = "  VOID  |";
+
+                lines = "  " + string.Join(", ", row.IndexLineList);
+
+
+                tableRows.Add(index + code + lex + qtdA + qtdD + tokenType + lines);
+            }
+
+
+            return tableRows;
+
+        }
+
+        private static List<string> FormateLexTableReport(List<LexRow> lexTableRow)
+        {
+
+            List<string> tableRows = new List<string>();
+            string symbolTableIndex = " ---";
+
+            foreach (LexRow row in lexTableRow)
+            {
+
+                if (row.SymbolTableIndex != null)
+                    symbolTableIndex = " " + row.SymbolTableIndex.ToString(); 
+
+                tableRows.Add(row.Text  + "   " + row.AtomCodeId + "   " + "|" + symbolTableIndex);
+            }
+
+            return tableRows;
+
         }
     }
 }

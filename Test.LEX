@@ -1,36 +1,38 @@
-Tabela Lex
+Relatório da análise léxica
 
-Lexeme  |  Átomo  | Índice na Tabela de Símbolos
-a |I02 |1
-d |I02 |2
-programa |00 |---
-Calculadora |I01 |3
-declaracoes |00 |---
-tipo-var |00 |---
-inteiro |00 |---
-: |S04 |---
-x |I02 |4
-; |S01 |---
-fim-declaracoes |00 |---
-funcoes |00 |---
-tipo-func |00 |---
-inteiro |00 |---
-: |S04 |---
-soma |I02 |5
-( |S06 |---
-tipo-param |00 |---
-inteiro |00 |---
-: |S04 |---
-y |I02 |6
-, |S05 |---
-z |I02 |7
-) |S07 |---
-{ |S09 |---
-retorna |00 |---
-y |I02 |6
-+ |S16 |---
-z |I02 |7
-; |S01 |---
-} |S10 |---
-fim-funcoes |00 |---
-fim-programa |00 |---
+Lexeme                          |  Átomo  | Índice na Tabela de Símbolos
+"15 ANA d"                      |   I06   | 1
+'a'                             |   I07   | 2
+a                               |   I02   | 3
+d                               |   I02   | 4
+programa                        |   X00   | 4
+Calculadora                     |   I01   | 5
+declaracoes                     |   X00   | 5
+tipo-var                        |   X00   | 5
+inteiro                         |   X00   | 5
+:                               |   S04   | 5
+x                               |   I02   | 6
+;                               |   S01   | 6
+fim-declaracoes                 |   X00   | 6
+funcoes                         |   X00   | 6
+tipo-func                       |   X00   | 6
+inteiro                         |   X00   | 6
+:                               |   S04   | 6
+soma                            |   I02   | 7
+(                               |   S06   | 7
+tipo-param                      |   X00   | 7
+inteiro                         |   X00   | 7
+:                               |   S04   | 7
+y                               |   I02   | 8
+,                               |   S05   | 8
+z                               |   I02   | 9
+)                               |   S07   | 9
+{                               |   S09   | 9
+retorna                         |   X00   | 9
+y                               |   I02   | 8
++                               |   S16   | 8
+z                               |   I02   | 9
+;                               |   S01   | 9
+}                               |   S10   | 9
+fim-funcoes                     |   X00   | 9
+fim-programa                    |   X00   | 9

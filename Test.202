@@ -1,4 +1,5 @@
- a               d                            
+@@@ @@@ "15 ANA d" 'a'
+ a               d@                            
 programa Calculadora declaracoes tipo-var inteiro: x; fim-declaracoes
     funcoes 
     tipo-func inteiro: soma(tipo-param inteiro: y,z) {
