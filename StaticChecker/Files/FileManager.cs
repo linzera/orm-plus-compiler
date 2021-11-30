@@ -28,20 +28,31 @@ namespace orm_plus_compiler.StaticChecker.Files
                         StreamReader rd = new StreamReader(path);
                         List<CodeLine> codeLineList = new List<CodeLine>();
                         int index = 1;
-
+                        bool blockComment = false;
+                        bool blockCommentAnotherLine = false;
                         while (!rd.EndOfStream)
                         {
                             string line = rd.ReadLine();
 
-                            if (!string.IsNullOrWhiteSpace(line) || !string.IsNullOrEmpty(line))
+                            if (!blockComment && line.Contains("/*") && !line.Contains("*/"))
+                                blockComment = true;
+
+                            if (blockComment && line.Contains("*/") && line.Contains("/*"))
+                                blockComment = false;
+
+                            if (blockComment && line.Contains("*/"))
+                                blockCommentAnotherLine = true;
+
+                            if ((!blockComment || blockCommentAnotherLine) && (!string.IsNullOrWhiteSpace(line) || !string.IsNullOrEmpty(line)))
                             {
-                                string filteredLine = lineFilter(line);
+                                string filteredLine = lineFilter(line, blockComment);
                                 if(!string.IsNullOrEmpty(filteredLine) || !string.IsNullOrWhiteSpace(filteredLine))
                                 {
                                     CodeLine codeLine = new CodeLine(index, filteredLine);
                                     codeLineList.Add(codeLine);
                                 }
                             }
+
                             index++;
                         }
 
@@ -115,17 +126,38 @@ namespace orm_plus_compiler.StaticChecker.Files
             Console.WriteLine(">> The reports were creat on the same directory entered previously <<\n");
         }
 
-        private static string lineFilter(string line)
+        private static string lineFilter(string line, bool blockCommentAnotherLine)
         {
             string filterWord = string.Empty;
+            bool blockComment = false;
+            bool lineComment = false;
+
+            int barIndex = line.IndexOf('/');
+            int charIndex = 0;
 
             foreach (char c in line)
             {
-                if (c.Equals(' ') || c.Equals('-') || OrmLanguageFacts.ValidEspecialCharList.Contains(c) || char.IsLetterOrDigit(c) || 
-                    OrmLanguageFacts.singleOperatorMapping.Any(a => a.Key.Equals(c)) || c.Equals('\"') || c.Equals('\''))
+                if (barIndex + 1 <= line.Length && barIndex > -1 && charIndex < line.Length - 1)
                 {
-                    filterWord += c;
+                    if (line[charIndex].Equals('/') && line[charIndex + 1].Equals('/'))
+                        lineComment = true;
+
+                    if (line[charIndex].Equals('/') && line[charIndex + 1].Equals('*'))
+                        blockComment = true;
                 }
+                    
+                if (!lineComment)
+                    if ((c.Equals(' ') || c.Equals('-') || OrmLanguageFacts.ValidEspecialCharList.Contains(c) || char.IsLetterOrDigit(c) || 
+                        OrmLanguageFacts.singleOperatorMapping.Any(a => a.Key.Equals(c)) || c.Equals('\"') || c.Equals('\'')) && !blockComment && !blockCommentAnotherLine)
+                    {
+                            filterWord += c;
+                    }
+
+                if (charIndex - 1 >= 0 && blockComment)
+                    if (c.Equals('/') && line[charIndex - 1].Equals('*'))
+                        blockComment = false;
+
+                charIndex++;
             }
 
             return filterWord;
