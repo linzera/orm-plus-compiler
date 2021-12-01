@@ -1,5 +1,11 @@
-@@@ @@@ "15 ANA d" 'a'
- a               d@                            
+ /* teste
+ sjdhfskudfksdfkj
+ */
+ 
+ 123 /*1*/ abc 'a'
+/*ad@*/
+ // teste
+ teste //sjdhfskudfksdfkj
 programa Calculadora declaracoes tipo-var inteiro: x; fim-declaracoes
     funcoes 
     tipo-func inteiro: soma(tipo-param inteiro: y,z) {
