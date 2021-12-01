@@ -95,8 +95,9 @@ namespace orm_plus_compiler.StaticChecker.Syntax.Utils
 
                             // precisamos descobrir se o token tem um antecedente que diz sua caracteristica
                             // ex: nome-programa
+
                             SyntaxToken previousToken = lineToken.Tokens[tokenIndex - 1];
-                            string previousContextAtomId = OrmLanguageFacts.EvaluatePreviousTokenCodeId(previousToken);
+                            string previousContextAtomId = OrmLanguageFacts.EvaluatePreviousTokenCodeId(previousToken, lineToken.Tokens, tokenIndex);
 
                             if (previousContextAtomId != null)
                             {

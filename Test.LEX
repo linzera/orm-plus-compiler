@@ -18,7 +18,7 @@ funcoes                         |   X00   | 6
 tipo-func                       |   X00   | 6
 inteiro                         |   X00   | 6
 :                               |   S04   | 6
-soma                            |   I02   | 7
+soma                            |   I03   | 7
 (                               |   S06   | 7
 tipo-param                      |   X00   | 7
 inteiro                         |   X00   | 7
@@ -34,5 +34,8 @@ y                               |   I02   | 8
 z                               |   I02   | 9
 ;                               |   S01   | 9
 }                               |   S10   | 9
-fim-funcoes                     |   X00   | 9
-fim-programa                    |   X00   | 9
+inteiro                         |   X00   | 9
+:                               |   S04   | 9
+xesk                            |   I02   | 10
+fim-funcoes                     |   X00   | 10
+fim-programa                    |   X00   | 10

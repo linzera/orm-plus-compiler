@@ -70,12 +70,46 @@ namespace orm_plus_compiler.StaticChecker.Syntax.Utils
             }
         }
 
-        public static string EvaluatePreviousTokenCodeId(SyntaxToken previousToken)
+        public static string EvaluatePreviousTokenCodeId(SyntaxToken previousToken, List<SyntaxToken> tokens, int tokenIndex)
         {
             switch (previousToken.Kind)
             {
                 case SyntaxKind.InitialProgramKeyword:
                     return "I01";
+                case SyntaxKind.TwoPoints:
+                    return EvaluateTwoPointsCodeId(previousToken, tokens, tokenIndex);
+                default:
+                    return null;
+            }
+        }
+
+        public static string EvaluateTwoPointsCodeId(SyntaxToken previousToken, List<SyntaxToken> token, int tokenIndex)
+        {
+
+            SyntaxToken functionOrVarDelcaration = null;
+
+            try
+            {
+                functionOrVarDelcaration = token[tokenIndex - 3];
+            }
+            catch
+            {
+
+            }
+
+            if (functionOrVarDelcaration == null)
+            {
+                return null;
+            }
+
+            var typeDeclarationTokenKind = OrmLanguageFacts.GetKeywordKind(functionOrVarDelcaration.Text);
+
+            switch (typeDeclarationTokenKind)
+            {
+                case SyntaxKind.FunctionTypeKeyword:
+                    return "I03";
+                case SyntaxKind.VarTypeKeyword:
+                    return "I02";
                 default:
                     return null;
             }
