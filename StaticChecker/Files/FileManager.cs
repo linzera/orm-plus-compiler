@@ -78,54 +78,6 @@ namespace orm_plus_compiler.StaticChecker.Files
 
         }
 
-
-        public static void FileWriter(List<SymbolTableRow> symbolTableRow, List<LexRow> lexTableRow, string path)
-        {
-            string symbolTablePath = path.Replace(".202", ".TAB");
-            string lexTablePath = path.Replace(".202", ".LEX");
-
-            // If directory does not exist, create it.  
-            if (File.Exists(symbolTablePath))
-                File.Delete(symbolTablePath);
-
-            if (File.Exists(lexTablePath))
-                File.Delete(lexTablePath);
-
-            Console.WriteLine("Creating the file.TAB...");
-            StreamWriter symbolTableFile = new StreamWriter(symbolTablePath, true);
-            Console.WriteLine("File Create!");
-            Console.WriteLine("Writing...\n");
-
-            symbolTableFile.WriteLine("Tabela de simbolos\n");
-            symbolTableFile.WriteLine("  Index  |  Cod  |              Lexeme            |  QtdA  |  QtdD  |  Tipo  |  Linhas");
-            List<string> stringSymbolTableRow = FormateSymbolTableReport(symbolTableRow);
-
-            foreach (string s in stringSymbolTableRow)
-                symbolTableFile.WriteLine(s);
-
-            symbolTableFile.Close();
-
-            Console.WriteLine("Done!\n");
-
-            Console.WriteLine("Creating the file.LEX...");
-            StreamWriter lexTableFile = new StreamWriter(lexTablePath, true);
-            Console.WriteLine("File Create!");
-            Console.WriteLine("Writing...\n");
-
-            lexTableFile.WriteLine("Relatório da análise léxica\n");
-            lexTableFile.WriteLine("Lexeme                          |  Átomo  | Índice na Tabela de Símbolos");
-            List<string> stringLexTableRow = FormateLexTableReport(lexTableRow);
-
-            foreach (string s in stringLexTableRow)
-                lexTableFile.WriteLine(s);
-
-            lexTableFile.Close();
-
-            Console.WriteLine("Done!\n");
-
-            Console.WriteLine(">> The reports were creat on the same directory entered previously <<\n");
-        }
-
         private static string lineFilter(string line, bool blockCommentAnotherLine)
         {
             string filterWord = string.Empty;
@@ -162,6 +114,75 @@ namespace orm_plus_compiler.StaticChecker.Files
 
             return filterWord;
         }
+
+        public static void FileWriter(List<SymbolTableRow> symbolTableRow, List<LexRow> lexTableRow, string path)
+        {
+            string symbolTablePath = path.Replace(".202", ".TAB");
+            string lexTablePath = path.Replace(".202", ".LEX");
+
+            // If directory does not exist, create it.  
+            if (File.Exists(symbolTablePath))
+                File.Delete(symbolTablePath);
+
+            if (File.Exists(lexTablePath))
+                File.Delete(lexTablePath);
+
+            WriteTABFile(symbolTablePath, symbolTableRow);
+
+            Console.WriteLine("Done!\n");
+
+            WriteLEXFile(lexTablePath, lexTableRow);
+
+            Console.WriteLine("Done!\n");
+
+            Console.WriteLine(">> The reports were creat on the same directory entered previously <<\n");
+        }
+
+        private static void WriteTABFile(string symbolTablePath, List<SymbolTableRow> symbolTableRow)
+        {
+            Console.WriteLine("Creating the file.TAB...");
+            StreamWriter symbolTableFile = new StreamWriter(symbolTablePath, true);
+            Console.WriteLine("File Create!");
+            Console.WriteLine("Writing...\n");
+
+            //WriteHeader(symbolTableFile);
+            symbolTableFile.WriteLine(">> Tabela de simbolos <<\n");
+            symbolTableFile.WriteLine("  Index  |  Cod  |              Lexeme            |  QtdA  |  QtdD  |  Tipo  |  Linhas");
+            List<string> stringSymbolTableRow = FormateSymbolTableReport(symbolTableRow);
+
+            foreach (string s in stringSymbolTableRow)
+                symbolTableFile.WriteLine(s);
+
+            symbolTableFile.Close();
+        }
+        private static void WriteLEXFile(string lexTablePath, List<LexRow> lexTableRow)
+        {
+            Console.WriteLine("Creating the file.LEX...");
+            StreamWriter lexTableFile = new StreamWriter(lexTablePath, true);
+            Console.WriteLine("File Create!");
+            Console.WriteLine("Writing...\n");
+
+            WriteHeader(lexTableFile);
+            lexTableFile.WriteLine("\n>> Relatório da análise léxica <<\n");
+            lexTableFile.WriteLine("Lexeme                          |  Átomo  | Índice na Tabela de Símbolos");
+            List<string> stringLexTableRow = FormateLexTableReport(lexTableRow);
+
+            foreach (string s in stringLexTableRow)
+                lexTableFile.WriteLine(s);
+
+            lexTableFile.Close();
+        }
+
+        private static void WriteHeader(StreamWriter file)
+        {
+            file.WriteLine("- Codigo da equipe: E04");
+            file.WriteLine("- Componentes:");
+            file.WriteLine("Ana Paula Tartari Seidenstucker       ana.seidenstucker@ucsal.edu.br   71 9 9397-0202");
+            file.WriteLine("Gean Carlos de Souza Almeida          gean.almeida@ucsal.edu.br        71 9 9673-2001");
+            file.WriteLine("Italo Gabriel Rocha Lino              italo.lino@ucsal.edu.br          71 9 8742-1452");
+            file.WriteLine("Felipe Augusto da E. Moreira          felipea.moreira@ucsal.edu.br     71 9 8775-6078");
+        }
+
         private static List<string> FormateSymbolTableReport(List<SymbolTableRow> symbolTableRow)
         {
 
@@ -181,7 +202,7 @@ namespace orm_plus_compiler.StaticChecker.Files
                 if (row.Index < 10)
                     index = "   00" + row.Index + "   |";
                 else if (row.Index < 100)
-                    index = "   0" + row.Index + "    |";
+                    index = "   0" + row.Index + "   |";
                 else
                     index = " " + row.Index + "   |";
 
@@ -195,13 +216,13 @@ namespace orm_plus_compiler.StaticChecker.Files
 
                     if (truncatedText.TruncatedText.Length < 10)
                     {
-                        qtdA = "   " + truncatedText.Text.Length + "   |";
-                        qtdD = "   " + truncatedText.TruncatedText.Length + "   |";
+                        qtdA = "   " + truncatedText.Text.Length + "    |";
+                        qtdD = "   " + truncatedText.TruncatedText.Length + "    |";
                     }
                     else if (truncatedText.TruncatedText.Length < 100)
                     {
-                        qtdA = "  " + truncatedText.Text.Length + "|";
-                        qtdD = "  " + truncatedText.TruncatedText.Length + "|";
+                        qtdA = "   " + truncatedText.Text.Length + "   |";
+                        qtdD = "   " + truncatedText.TruncatedText.Length + "   |";
                     }
                     else
                     {
@@ -218,8 +239,21 @@ namespace orm_plus_compiler.StaticChecker.Files
                         lex = lex + " ";
                     lex = lex + " |";
 
-                    qtdA = "   " + row.SyntaxToken.Text.Length + "    |";
+                    if (row.SyntaxToken.Text.Length < 10)
+                    {
+                        qtdA = "   " + row.SyntaxToken.Text.Length + "    |";
+                    }
+                    else if (row.SyntaxToken.Text.Length < 100)
+                    {
+                        qtdA = "   " + row.SyntaxToken.Text.Length + "   |";
+                    }
+                    else
+                    {
+                        qtdA = "   " + row.SyntaxToken.Text.Length + "  |";
+                    }
+
                     qtdD = qtdA;
+
                 }
 
                 if (row.SyntaxToken.Kind == Enum.SyntaxKind.IntegerToken)
@@ -243,20 +277,23 @@ namespace orm_plus_compiler.StaticChecker.Files
             return tableRows;
 
         }
-
         private static List<string> FormateLexTableReport(List<LexRow> lexTableRow)
         {
 
             List<string> tableRows = new List<string>();
-            string symbolTableIndex = " ---";
+            string symbolTableIndex = string.Empty;
 
             foreach (LexRow row in lexTableRow)
             {
+                symbolTableIndex = " ---";
 
                 if (row.SymbolTableIndex != null)
-                    symbolTableIndex = " " + row.SymbolTableIndex.ToString(); 
+                    symbolTableIndex = " " + row.SymbolTableIndex.ToString();
 
-                tableRows.Add(row.Text  + "   " + row.AtomCodeId + "   " + "|" + symbolTableIndex);
+                string rowLex = row.Text + "   " + row.AtomCodeId + "   " + "|" + symbolTableIndex;
+
+                if (!tableRows.Contains(rowLex))
+                    tableRows.Add(rowLex);
             }
 
             return tableRows;

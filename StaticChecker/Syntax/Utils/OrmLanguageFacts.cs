@@ -65,6 +65,58 @@ namespace orm_plus_compiler.StaticChecker.Syntax.Utils
                     return "I07";
                 case SyntaxKind.ConstString:
                     return "I06";
+                case SyntaxKind.InitialProgramKeyword:
+                    return "P01";
+                case SyntaxKind.InitialStatementsKeyword:
+                    return "P02";
+                case SyntaxKind.FinalStatementsKeyword:
+                    return "P03";
+                case SyntaxKind.InitialFunctionKeyword:
+                    return "P04";
+                case SyntaxKind.FinalFunctionKeyword:
+                    return "P05";
+                case SyntaxKind.FinalProgramKeyword:
+                    return "P06";
+                case SyntaxKind.VarTypeKeyword:
+                    return "P07";
+                case SyntaxKind.VoidTypeKeyword:
+                    return "P08";
+                case SyntaxKind.FloatTypeKeyword:
+                    return "P09";
+                case SyntaxKind.IntegerTypeKeyword:
+                    return "P10";
+                case SyntaxKind.StringKeyword:
+                    return "P11";
+                case SyntaxKind.LogicKeyword:
+                    return "P12";
+                case SyntaxKind.CharKeyword:
+                    return "P13";
+                case SyntaxKind.FunctionTypeKeyword:
+                    return "P14";
+                case SyntaxKind.FinalFuncKyword:
+                    return "P15";
+                case SyntaxKind.ParameterTypeKeyword:
+                    return "P16";
+                case SyntaxKind.IfKeyword:
+                    return "P17";
+                case SyntaxKind.EndIfKeyword:
+                    return "P18";
+                case SyntaxKind.ElseIfKeyword:
+                    return "P19";
+                case SyntaxKind.WhileKeyword:
+                    return "P20";
+                case SyntaxKind.EndWhileKeyword:
+                    return "P21";
+                case SyntaxKind.ReturnKeyword:
+                    return "P22";
+                case SyntaxKind.PauseKeyword:
+                    return "P23";
+                case SyntaxKind.PrintKeyword:
+                    return "P24";
+                case SyntaxKind.TrueKeyword:
+                    return "P25";
+                case SyntaxKind.FalseKeyword:
+                    return "P26";
                 default:
                     return "X00";
             }
@@ -109,7 +161,7 @@ namespace orm_plus_compiler.StaticChecker.Syntax.Utils
                 case SyntaxKind.FunctionTypeKeyword:
                     return "I03";
                 case SyntaxKind.VarTypeKeyword:
-                    return "I02";
+                    return "???";
                 default:
                     return null;
             }
@@ -120,7 +172,7 @@ namespace orm_plus_compiler.StaticChecker.Syntax.Utils
         {
             var normalizedText = text.ToLower();
 
-            switch (text)
+            switch (normalizedText)
             {
                 case "true":
                     return SyntaxKind.TrueKeyword;
@@ -148,10 +200,32 @@ namespace orm_plus_compiler.StaticChecker.Syntax.Utils
                     return SyntaxKind.IntegerTypeKeyword;
                 case "tipo-func":
                     return SyntaxKind.FunctionTypeKeyword;
+                case "fim-func":
+                    return SyntaxKind.FinalFuncKyword;
                 case "tipo-param":
                     return SyntaxKind.ParameterTypeKeyword;
+                case "cadeia":
+                    return SyntaxKind.StringKeyword;
+                case "logico":
+                    return SyntaxKind.LogicKeyword;
                 case "retorna":
                     return SyntaxKind.ReturnKeyword;
+                case "caracter":
+                    return SyntaxKind.CharKeyword;
+                case "se":
+                    return SyntaxKind.IfKeyword;
+                case "fim-se":
+                    return SyntaxKind.EndIfKeyword;
+                case "senao":
+                    return SyntaxKind.ElseIfKeyword;
+                case "enquanto":
+                    return SyntaxKind.WhileKeyword;
+                case "fim-enquanto":
+                    return SyntaxKind.EndWhileKeyword;
+                case "pausa":
+                    return SyntaxKind.PauseKeyword;
+                case "imprime":
+                    return SyntaxKind.PrintKeyword;
                 default:
                     return SyntaxKind.NotReservedKeyword;
             }

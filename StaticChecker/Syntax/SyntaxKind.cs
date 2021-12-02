@@ -55,6 +55,18 @@ namespace orm_plus_compiler.StaticChecker.Enum
         FunctionTypeKeyword,
         ParameterTypeKeyword,
         ReturnKeyword,
-        TwoPointsEquals
+        TwoPointsEquals,
+        StringKeyword,
+        LogicKeyword,
+        CharKeyword,
+        IfKeyword,
+        EndIfKeyword,
+        ElseIfKeyword,
+        WhileKeyword,
+        EndWhileKeyword,
+        PauseKeyword,
+        PrintKeyword,
+        FinalFuncKyword
+
     }
 }

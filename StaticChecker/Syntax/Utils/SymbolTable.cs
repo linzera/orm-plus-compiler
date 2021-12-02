@@ -48,7 +48,6 @@ namespace orm_plus_compiler.StaticChecker.Syntax.Utils
                 var newLineToken = new LineToken(line);
                 var lexer = new Lexer(line.Line);
 
-
                 SyntaxToken token;
 
                 do

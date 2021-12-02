@@ -1,41 +1,44 @@
-Relatório da análise léxica
+Codigo da equipe: E04
+Componentes: 
+
+Ana Paula Tartari Seidenstucker       ana.seidenstucker@ucsal.edu.br   71 9 9397-0202
+Gean Carlos de Souza Almeida          gean.almeida@ucsal.edu.br        71 9 9673-2001
+Italo Gabriel Rocha Lino              italo.lino@ucsal.edu.br          71 9 8742-1452
+Felipe Augusto da E. Moreira          felipea.moreira@ucsal.edu.br     71 9 8775-6078
+
+>> Relatório da análise léxica <<
 
 Lexeme                          |  Átomo  | Índice na Tabela de Símbolos
-"15 ANA d"                      |   I06   | 1
-'a'                             |   I07   | 2
-a                               |   I02   | 3
-d                               |   I02   | 4
-programa                        |   X00   | 4
-Calculadora                     |   I01   | 5
-declaracoes                     |   X00   | 5
-tipo-var                        |   X00   | 5
-inteiro                         |   X00   | 5
-:                               |   S04   | 5
-x                               |   I02   | 6
-;                               |   S01   | 6
-fim-declaracoes                 |   X00   | 6
-funcoes                         |   X00   | 6
-tipo-func                       |   X00   | 6
-inteiro                         |   X00   | 6
-:                               |   S04   | 6
-soma                            |   I03   | 7
-(                               |   S06   | 7
-tipo-param                      |   X00   | 7
-inteiro                         |   X00   | 7
-:                               |   S04   | 7
-y                               |   I02   | 8
-,                               |   S05   | 8
-z                               |   I02   | 9
-)                               |   S07   | 9
-{                               |   S09   | 9
-retorna                         |   X00   | 9
-y                               |   I02   | 8
-+                               |   S16   | 8
-z                               |   I02   | 9
-;                               |   S01   | 9
-}                               |   S10   | 9
-inteiro                         |   X00   | 9
-:                               |   S04   | 9
-xesk                            |   I02   | 10
-fim-funcoes                     |   X00   | 10
-fim-programa                    |   X00   | 10
+Calculadora                     |   I02   | 1
+CalculadoraCalculadoraCalculad  |   I02   | 2
+tipo-func                       |   P14   | ---
+inteiro                         |   P10   | ---
+:                               |   S04   | ---
+soma                            |   I03   | 3
+real                            |   P09   | ---
+false                           |   I02   | 4
+tipo-var                        |   P07   | ---
+se                              |   P17   | ---
+123                             |   I04   | 5
+abc                             |   I02   | 6
+'a'                             |   I07   | 7
+teste                           |   I02   | 8
+programa                        |   P01   | ---
+declaracoes                     |   P02   | ---
+x                               |   ???   | 9
+;                               |   S01   | ---
+fim-declaracoes                 |   P03   | ---
+funcoes                         |   P04   | ---
+soma                            |   I02   | 3
+(                               |   S06   | ---
+tipo-param                      |   P16   | ---
+y                               |   I02   | 10
+,                               |   S05   | ---
+z                               |   I02   | 11
+)                               |   S07   | ---
+{                               |   S09   | ---
+retorna                         |   P22   | ---
++                               |   S16   | ---
+}                               |   S10   | ---
+fim-funcoes                     |   P05   | ---
+fim-programa                    |   P06   | ---

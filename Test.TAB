@@ -1,13 +1,14 @@
-Tabela de simbolos
+>> Tabela de simbolos <<
 
   Index  |  Cod  |              Lexeme            |  QtdA  |  QtdD  |  Tipo  |  Linhas
-   001   |  I06  |"15 ANA d"                      |   11    |   11    | STRING |  1
-   002   |  I07  |'a'                             |   3    |   3    |  CHAR  |  1
-   003   |  I02  |a                               |   1    |   1    |  VOID  |  2
-   004   |  I02  |d                               |   1    |   1    |  VOID  |  2
-   005   |  I01  |Calculadora                     |   11    |   11    |  VOID  |  3
-   006   |  I02  |x                               |   1    |   1    |  VOID  |  3
-   007   |  I03  |soma                            |   4    |   4    |  VOID  |  5
-   008   |  I02  |y                               |   1    |   1    |  VOID  |  5, 6
-   009   |  I02  |z                               |   1    |   1    |  VOID  |  5, 6
-   010    |  I02  |xesk                            |   4    |   4    |  VOID  |  8
+   001   |  I02  |Calculadora                     |   11   |   11   |  VOID  |  1, 13
+   002   |  I02  |CalculadoraCalculadoraCalculad  |   55   |   30   |  VOID  |  2
+   003   |  I03  |soma                            |   4    |   4    |  VOID  |  3, 15
+   004   |  I02  |false                           |   5    |   5    |  VOID  |  4
+   005   |  I04  |123                             |   3    |   3    |  INT   |  9
+   006   |  I02  |abc                             |   3    |   3    |  VOID  |  9
+   007   |  I07  |'a'                             |   3    |   3    |  CHAR  |  9
+   008   |  I02  |teste                           |   5    |   5    |  VOID  |  12
+   009   |  ???  |x                               |   1    |   1    |  VOID  |  13
+   010   |  I02  |y                               |   1    |   1    |  VOID  |  15, 16
+   011   |  I02  |z                               |   1    |   1    |  VOID  |  15, 16
