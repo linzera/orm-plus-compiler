@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace orm_plus_compiler.StaticChecker.Syntax.Utils
 {
@@ -12,13 +8,16 @@ namespace orm_plus_compiler.StaticChecker.Syntax.Utils
 
         public string FileExtention { get; set; }
 
+        public string FilePath { get; set; }
+
         public List<CodeLine> CodeLines { get; }
 
-        public Code(string fileName, string fileExtention, List<CodeLine> codeLines)
+        public Code(string fileName, string fileExtention, List<CodeLine> codeLines, string filePath)
         {
             FileName = fileName;
             FileExtention = fileExtention;
             CodeLines = codeLines;
+            FilePath = filePath;
         }
     }
 }

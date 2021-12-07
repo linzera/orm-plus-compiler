@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace orm_plus_compiler.StaticChecker.Enum
 {
-    public enum SyntaxKind
+    internal enum SyntaxKind
     {
         // Tokens
-        NumberToken,
+        IntegerToken,
+        DoubleToken,
         OpenParenthesisToken,
         CloseParenthesisToken,
         EqualsEqualsToken,
@@ -22,7 +23,6 @@ namespace orm_plus_compiler.StaticChecker.Enum
         BadExpressionToken,
         EndOfFileToken,
         IdentifierToken,
-        TwoPointsEqualsToken,
         SmallerOrEqualsThan,
         BiggerOrEqualsThan,
         SmallerThan,
@@ -35,15 +35,8 @@ namespace orm_plus_compiler.StaticChecker.Enum
         LeftBrace,
         RightBrace,
         QuestionMark,
-
-        // Expressoes
-        BinaryExpression,
-        ParenthesizedExpression,
-        UnaryExpression,
-        LiteralExpression,
-        BracketsizedExpression,
-        NameExpression,
-        AssignmentExpression,
+        ConstChar,
+        ConstString,
 
         // Palavras reservadas
         TrueKeyword,
@@ -55,6 +48,25 @@ namespace orm_plus_compiler.StaticChecker.Enum
         InitialFunctionKeyword,
         FinalFunctionKeyword,
         VarTypeKeyword,
+        NotReservedKeyword,
+        VoidTypeKeyword,
+        FloatTypeKeyword,
+        IntegerTypeKeyword,
+        FunctionTypeKeyword,
+        ParameterTypeKeyword,
+        ReturnKeyword,
+        TwoPointsEquals,
+        StringKeyword,
+        LogicKeyword,
+        CharKeyword,
+        IfKeyword,
+        EndIfKeyword,
+        ElseIfKeyword,
+        WhileKeyword,
+        EndWhileKeyword,
+        PauseKeyword,
+        PrintKeyword,
+        FinalFuncKyword
 
     }
 }

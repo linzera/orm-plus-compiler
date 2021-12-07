@@ -1,4 +1,17 @@
- a               d                            
+125.45
+123abc 12345678912345678945624587468753.2157
+ Calculadora
+  CalculadoraCalculadoraCalculadoraCalculadoraCalculadora
+ tipo-func inteiro: soma123
+ real false tipo-var se
+ /* teste
+ sjdhfskudfksdfkj
+ */
+ 
+ 123 /*1*/ abc 'a'
+/*ad@*/
+ // teste
+ teste //sjdhfskudfksdfkj
 programa Calculadora declaracoes tipo-var inteiro: x; fim-declaracoes
     funcoes 
     tipo-func inteiro: soma(tipo-param inteiro: y,z) {

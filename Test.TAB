@@ -1,0 +1,18 @@
+>> Tabela de simbolos <<
+
+  Index  |  Cod  |              Lexeme            |  QtdA  |  QtdD  |  Tipo  |  Linhas
+   001   |  I05  |125.45                          |   6    |   6    |  REAL  |  1
+   002   |  I02  |123abc                          |   6    |   6    |  VOID  |  2
+   003   |  I04  |123456789123456789456245874687  |   37   |   30   |  INT   |  2
+   004   |  I02  |Calculadora                     |   11   |   11   |  VOID  |  3, 15
+   005   |  I02  |CalculadoraCalculadoraCalculad  |   55   |   30   |  VOID  |  4
+   006   |  I03  |soma123                         |   7    |   7    |  VOID  |  5
+   007   |  I02  |false                           |   5    |   5    |  VOID  |  6
+   008   |  I04  |123                             |   3    |   3    |  INT   |  11
+   009   |  I02  |abc                             |   3    |   3    |  VOID  |  11
+   010   |  I07  |'a'                             |   3    |   3    |  CHAR  |  11
+   011   |  I02  |teste                           |   5    |   5    |  VOID  |  14
+   012   |  I02  |x                               |   1    |   1    |  VOID  |  15
+   013   |  I03  |soma                            |   4    |   4    |  VOID  |  17
+   014   |  I02  |y                               |   1    |   1    |  VOID  |  17, 18
+   015   |  I02  |z                               |   1    |   1    |  VOID  |  17, 18
