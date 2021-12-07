@@ -41,31 +41,58 @@ namespace orm_plus_compiler.StaticChecker.Syntax.Structs
             _position++;
         }
 
+        private SyntaxKind DefineNumberType(string value)
+        {
+            if (Int64.TryParse(value, out Int64 intType) || !value.Contains('.'))
+                return SyntaxKind.IntegerToken;
+            else if (Decimal.TryParse(value, out decimal decimalType) || float.TryParse(value, out float floatType))
+                return SyntaxKind.DoubleToken;
+            else
+                return SyntaxKind.NotReservedKeyword;
+        }
+
         public SyntaxToken Lex()
         {
 
             if (_position >= _text.Length)
                 return new SyntaxToken(SyntaxKind.EndOfFileToken, _position, "\0", null, null);
 
-            if (char.IsDigit(Current))
+            if (char.IsLetterOrDigit(Current))
             {
                 var start = _position;
 
-                while (char.IsDigit(Current) || Current.Equals('.'))
+                while (char.IsLetterOrDigit(Current) || Current.Equals('.') || Current.Equals('-') || OrmLanguageFacts.ValidEspecialCharList.Contains(Current))
                     Next();
 
-                var digitLength = _position - start;
-                var text = _text.Substring(start, digitLength);
-                if (!double.TryParse(text, out double value))
+                int length = _position - start;
+                string text = _text.Substring(start, length);
+                SyntaxKind kind;
+                string atomCodeId = string.Empty;
+
+                if (!float.TryParse(text, out float value))
                 {
-                    _diagnostics.Add($"The number {_text} can not be represented as an Int32");
+                    kind = OrmLanguageFacts.GetKeywordKind(text);
+                    atomCodeId = OrmLanguageFacts.GetAtomCodeId(kind);
+                }
+                else
+                {
+                    kind = DefineNumberType(text);
+                    atomCodeId = OrmLanguageFacts.GetAtomCodeId(kind);
+
                 }
 
-                var numberKind = value % 1 == 0 ? SyntaxKind.IntegerToken : SyntaxKind.DoubleToken;
+                if (length >= 30)
+                {
+                    if(kind == SyntaxKind.IntegerToken || kind == SyntaxKind.DoubleToken)
+                    {
 
-                var atomCodeId = OrmLanguageFacts.GetAtomCodeId(numberKind);
+                        kind = DefineNumberType(text.Substring(0, 30));
+                        atomCodeId = OrmLanguageFacts.GetAtomCodeId(kind);
+                    }
+                    return new TruncatedSyntaxToken(kind, start, text, text.Substring(0, 30), null, atomCodeId);
+                }
 
-                return new SyntaxToken(numberKind, start, text, value, atomCodeId);
+                return new SyntaxToken(kind, start, text, null, atomCodeId);
             }
 
             if (char.IsWhiteSpace(Current))
@@ -80,7 +107,7 @@ namespace orm_plus_compiler.StaticChecker.Syntax.Structs
                 return new SyntaxToken(SyntaxKind.WhiteSpaceToken, start, text, null, null);
             }
 
-            if (char.IsLetter(Current))
+          /*  if (char.IsLetter(Current))
             {
                 var start = _position;
 
@@ -98,13 +125,13 @@ namespace orm_plus_compiler.StaticChecker.Syntax.Structs
                 }
 
                 return new SyntaxToken(kind, start, text, null, atomCodeId);
-            }
+            } */
 
             if (Current.Equals('\''))
             {
                 var start = _position;
 
-                while (char.IsLetter(Current) || Current.Equals('\''))
+                while (char.IsLetterOrDigit(Current) || Current.Equals('\''))
                     Next();
 
                 int length = _position - start;
@@ -119,7 +146,8 @@ namespace orm_plus_compiler.StaticChecker.Syntax.Structs
             {
                 var start = _position;
 
-                while (char.IsLetterOrDigit(Current) || Current.Equals('\"') || Current.Equals(' '))
+                while (char.IsLetterOrDigit(Current) || Current.Equals('\"') || Current.Equals(' ') 
+                    || Current.Equals('-') || OrmLanguageFacts.ValidEspecialCharList.Contains(Current))
                     Next();
 
                 int length = _position - start;

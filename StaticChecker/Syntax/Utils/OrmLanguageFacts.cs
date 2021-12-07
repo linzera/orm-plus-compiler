@@ -161,7 +161,7 @@ namespace orm_plus_compiler.StaticChecker.Syntax.Utils
                 case SyntaxKind.FunctionTypeKeyword:
                     return "I03";
                 case SyntaxKind.VarTypeKeyword:
-                    return "???";
+                    return "I02";
                 default:
                     return null;
             }
