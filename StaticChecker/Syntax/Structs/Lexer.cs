@@ -107,37 +107,24 @@ namespace orm_plus_compiler.StaticChecker.Syntax.Structs
                 return new SyntaxToken(SyntaxKind.WhiteSpaceToken, start, text, null, null);
             }
 
-          /*  if (char.IsLetter(Current))
-            {
-                var start = _position;
-
-                while (char.IsLetter(Current) || Current.Equals('-') || OrmLanguageFacts.ValidEspecialCharList.Contains(Current))
-                    Next();
-
-                var length = _position - start;
-                var text = _text.Substring(start, length);
-                var kind = OrmLanguageFacts.GetKeywordKind(text);
-                var atomCodeId = OrmLanguageFacts.GetAtomCodeId(kind);
-
-                if (length >= 30)
-                {
-                    return new TruncatedSyntaxToken(kind, start, text, text.Substring(0, 30), null, atomCodeId);
-                }
-
-                return new SyntaxToken(kind, start, text, null, atomCodeId);
-            } */
 
             if (Current.Equals('\''))
             {
                 var start = _position;
 
-                while (char.IsLetterOrDigit(Current) || Current.Equals('\''))
+                while (char.IsLetter(Current) || Current.Equals('\''))
                     Next();
 
                 int length = _position - start;
                 string text = _text.Substring(start, length);
-                SyntaxKind kind = SyntaxKind.ConstChar;
+                text = text.Replace("\'", "");
+                SyntaxKind kind = text.Length == 1 ? SyntaxKind.ConstChar : SyntaxKind.NotReservedKeyword;
                 string atomCodeId = OrmLanguageFacts.GetAtomCodeId(kind);
+
+                if (length >= 30)
+                {
+                    return new TruncatedSyntaxToken(kind, start, text, text.Substring(0, 30), null, atomCodeId);
+                }
 
                 return new SyntaxToken(kind, start, text, null, atomCodeId);
             }
@@ -152,8 +139,14 @@ namespace orm_plus_compiler.StaticChecker.Syntax.Structs
 
                 int length = _position - start;
                 string text = _text.Substring(start, length);
+                text = text.Replace("\"", "");
                 SyntaxKind kind = SyntaxKind.ConstString;
                 string atomCodeId = OrmLanguageFacts.GetAtomCodeId(kind);
+
+                if (length >= 30)
+                {
+                    return new TruncatedSyntaxToken(kind, start, text, text.Substring(0, 30), null, atomCodeId);
+                }
 
                 return new SyntaxToken(kind, start, text, null, atomCodeId);
             }
