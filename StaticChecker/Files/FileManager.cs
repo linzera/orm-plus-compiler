@@ -17,7 +17,7 @@ namespace orm_plus_compiler.StaticChecker.Files
             {
                 Console.WriteLine(" Enter the path to te .202 format file: ");
                 Console.Write("> ");
-                string path = Console.ReadLine();
+                string path = Console.ReadLine().Replace("\"", "");
 
                 if (!Path.GetExtension(path).Equals(".202"))
                     Console.WriteLine(" \nERRO: Invalid file format, please select a .202 extation file\n");
